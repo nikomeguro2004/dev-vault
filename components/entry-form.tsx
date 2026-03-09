@@ -69,17 +69,6 @@ export function EntryForm({
               ))}
             </Select>
           </div>
-          <div className="space-y-1.5">
-            <label htmlFor="tags" className="text-sm font-medium text-zinc-200">Tags</label>
-            <Input
-              id="tags"
-              name="tags"
-              maxLength={500}
-              placeholder="react, ssr, auth, caching"
-              defaultValue={defaultValue?.tags.map((tag) => tag.name).join(", ")}
-            />
-            <p className="text-xs text-zinc-500">Separate multiple tags with commas.</p>
-          </div>
         </CardContent>
       </Card>
 

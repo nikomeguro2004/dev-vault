@@ -1,39 +1,36 @@
 # Dev Vault
 
-Personal developer knowledge hub — a structured reference vault for frameworks, modules, tools, prompts, and UI effects. Built with Next.js App Router, Supabase, and Tailwind CSS v4.
+Personal developer knowledge hub — a structured reference vault for frameworks, modules, tools, and UI effects. Built with Next.js App Router, Supabase, and Tailwind CSS v4.
 
 ---
 
 ## Features
 
-- **Dashboard home** — hero with live stats (entry count, tag count, category count), category grid with gradient cards, recent entries, popular tags sidebar, and a first-time guide nudge
-- **5 category pages** — `/frameworks`, `/modules`, `/tools`, `/prompts`, `/effects` — each with search, tag filters, and entry grid
+- **Dashboard home** — hero with live stats (entry count and category count), category grid with gradient cards, recent entries, and a first-time guide nudge
+- **4 category pages** — `/frameworks`, `/modules`, `/tools`, `/effects` — each with search and entry grid
 - **Entry detail pages** — breadcrumb nav, colour-coded knowledge sections (What it is, How it works, When to use, Pros/Cons), syntax-highlighted code block with copy button, and notes
-- **Create / Edit / Delete** — full CRUD via Next.js Server Actions with server-side validation
-- **How To page** — step-by-step guide, field reference, markdown cheatsheet, code formatting tips, tags/categories reference
-- **Tag system** — comma-separated tags per entry; filterable across all category pages; popular tags shown on dashboard
+- **Create / Edit** — write and update entries via Next.js Server Actions with server-side validation
+- **How To page** — step-by-step guide, field reference, markdown cheatsheet, code formatting tips, categories reference
 - **Search** — per-category full-text search (ILIKE across title + description)
 - **Forced dark mode** — no light mode, no toggle, no flash
 - **Security** — PostgREST injection prevention, UUID validation, server-side length/whitelist validation, HTTP security headers
-- **Performance** — lean DB selects (list views omit heavy text fields), parallel data fetching, batch tag upsert, `display: swap` fonts
+- **Performance** — lean DB selects (list views omit heavy text fields), parallel data fetching, `display: swap` fonts
 - **Per-page dynamic metadata** — browser tab titles and descriptions for every route
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 16.1.6 (App Router, Turbopack) |
-| Language | TypeScript |
-| Styling | Tailwind CSS v4 + `@tailwindcss/typography` |
-| Database | Supabase (PostgreSQL) |
-| Auth-free client | `@supabase/supabase-js` v2 (anon key, no auth) |
-| Markdown | `react-markdown` + `remark-gfm` + `rehype-highlight` |
-| Icons | `lucide-react` |
-| Fonts | Space Grotesk (display) + JetBrains Mono (code) via `next/font` |
-| UI primitives | Local shadcn-style components (Card, Button, Badge, Input, Textarea, Select) |
-| Theme | `next-themes` with `forcedTheme="dark"` |
+- Next.js 16.1.6 (App Router, Turbopack)
+- TypeScript
+- Tailwind CSS v4 + `@tailwindcss/typography`
+- Supabase (PostgreSQL)
+- `@supabase/supabase-js` v2 (anon key, no auth)
+- `react-markdown` + `remark-gfm` + `rehype-highlight`
+- `lucide-react`
+- Space Grotesk + JetBrains Mono via `next/font`
+- Local shadcn-style UI components
+- `next-themes` with `forcedTheme="dark"`
 
 ---
 
@@ -41,12 +38,12 @@ Personal developer knowledge hub — a structured reference vault for frameworks
 
 ```
 app/
-  page.tsx                  # Dashboard home (hero, categories, recent entries, tags)
+  page.tsx                  # Dashboard home (hero, categories, recent entries)
   layout.tsx                # Root layout (fonts, ThemeProvider, SiteHeader, skip nav)
   globals.css               # CSS variables, Tailwind base styles
-  actions.ts                # Server Actions: createEntry, updateEntry, deleteEntry
+  actions.ts                # Server Actions: createEntry, updateEntry
   [category]/
-    page.tsx                # Category listing with search + tag filters
+    page.tsx                # Category listing with search
   entries/
     new/page.tsx            # Create entry form
     [id]/
@@ -56,10 +53,10 @@ app/
 
 components/
   site-header.tsx           # Sticky header with category nav + guide link
+  site-footer.tsx           # Footer with contact link
   entry-card.tsx            # Card used in list/grid views (lean EntryListItem type)
   entry-form.tsx            # Shared create/edit form with CodeField + Field components
   empty-state.tsx           # Dashed-border empty state card
-  delete-entry-button.tsx   # Client-side confirm-then-submit delete button
   form-submit-button.tsx    # useFormStatus-aware submit button
   markdown-renderer.tsx     # prose-invert ReactMarkdown with copy-code button
   copy-code-button.tsx      # Clipboard copy button for code blocks
@@ -82,7 +79,7 @@ lib/
   utils.ts                  # cn() helper (clsx + tailwind-merge)
 
 supabase/
-  schema.sql                # Tables (categories, entries, tags, entry_tags) + indexes
+  schema.sql                # Tables (categories, entries) + indexes
 ```
 
 ---
@@ -131,23 +128,19 @@ npm run start
 categories     id, name, slug, created_at
 entries        id, title, description, category_id (FK), what_it_is, how_it_works,
                when_to_use, pros, cons, example_code, notes, created_at
-tags           id, name (unique)
-entry_tags     entry_id (FK), tag_id (FK)  — junction table
 ```
 
-Indexes on `entries.category_id`, `entries.title` (GIN full-text), `entries.description` (GIN full-text), and `tags.name`.
+Indexes on `entries.category_id`, `entries.title` (GIN full-text), and `entries.description` (GIN full-text).
 
 ---
 
 ## Routes
 
-| Route | Type | Description |
-|---|---|---|
-| `/` | Static | Dashboard home |
-| `/how-to` | Static | Formatting guide |
-| `/[category]` | Dynamic | Category listing (search + tag filter) |
-| `/entries/new` | Dynamic | Create entry |
-| `/entries/[id]` | Dynamic | Entry detail |
-| `/entries/[id]/edit` | Dynamic | Edit entry |
+- `/` (Static): Dashboard home
+- `/how-to` (Static): Formatting guide
+- `/[category]` (Dynamic): Category listing (search)
+- `/entries/new` (Dynamic): Create entry
+- `/entries/[id]` (Dynamic): Entry detail
+- `/entries/[id]/edit` (Dynamic): Edit entry
 
 - For production, add Row Level Security policies and auth.

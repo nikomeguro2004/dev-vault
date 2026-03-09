@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import "./globals.css";
 
@@ -21,7 +22,7 @@ const monoFont = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Developer Knowledge Hub",
-  description: "Personal developer reference vault with categories, tags, and snippets.",
+  description: "Personal developer reference vault with categories and snippets.",
 };
 
 export default function RootLayout({
@@ -36,7 +37,7 @@ export default function RootLayout({
           <div className="app-bg min-h-screen">
             <a
               href="#main-content"
-              className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-cyan-500 focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+              className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-60 focus:rounded-lg focus:bg-cyan-500 focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
             >
               Skip to content
             </a>
@@ -47,6 +48,7 @@ export default function RootLayout({
             >
               {children}
             </main>
+            <SiteFooter />
           </div>
         </ThemeProvider>
       </body>

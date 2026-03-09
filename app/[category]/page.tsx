@@ -34,7 +34,7 @@ export default async function CategoryPage({
   searchParams,
 }: {
   params: Promise<{ category: string }>;
-  searchParams: Promise<{ q?: string; tag?: string }>;
+  searchParams: Promise<{ q?: string }>;
 }) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
@@ -45,28 +45,15 @@ export default async function CategoryPage({
 
   const category = resolvedParams.category as CategorySlug;
   const query = resolvedSearchParams.q?.trim() ?? "";
-  const activeTag = resolvedSearchParams.tag?.trim() ?? "";
 
-  const [entries, tagEntries] = await Promise.all([
-    getEntries({
-      categorySlug: category,
-      search: query,
-      tag: activeTag,
-    }),
-    // Only fetch a separate full-category list when a filter is active;
-    // otherwise derive tags from the already-fetched entries.
-    query || activeTag
-      ? getEntries({ categorySlug: category, limit: 200 })
-      : Promise.resolve(null),
-  ]);
-
-  const tags = Array.from(
-    new Set((tagEntries ?? entries).flatMap((entry) => entry.tags.map((tag) => tag.name))),
-  ).slice(0, 20);
+  const entries = await getEntries({
+    categorySlug: category,
+    search: query,
+  });
 
   return (
     <div className="space-y-8">
-      <section className="rounded-3xl border border-white/10 bg-[var(--panel)] p-6 backdrop-blur-xl sm:p-8">
+      <section className="rounded-3xl border border-white/10 bg-(--panel) p-6 backdrop-blur-xl sm:p-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <Badge>{CATEGORY_META[category].title}</Badge>
@@ -90,39 +77,21 @@ export default async function CategoryPage({
               name="q"
               placeholder="Search entries"
               defaultValue={query}
-              autoFocus={!query && !activeTag}
+              autoFocus={!query}
             />
-            {activeTag ? <input type="hidden" name="tag" value={activeTag} /> : null}
             <Button type="submit">Search</Button>
           </form>
           <p className="text-sm text-zinc-300">
             Showing {entries.length} {entries.length === 1 ? "entry" : "entries"}
-            {activeTag ? ` for #${activeTag}` : ""}
             {query ? ` matching \"${query}\"` : ""}
           </p>
-          <div className="flex flex-wrap gap-2">
-            <Link href={`/${category}`}>
-              <Badge className={!activeTag ? "ring-2 ring-cyan-500/40" : ""}>All</Badge>
-            </Link>
-            {tags.map((tag) => (
-              <Link
-                key={tag}
-                href={`/${category}?${new URLSearchParams({
-                  ...(query ? { q: query } : {}),
-                  tag,
-                }).toString()}`}
-              >
-                <Badge className={activeTag === tag ? "ring-2 ring-cyan-500/40" : ""}>
-                  #{tag}
-                </Badge>
-              </Link>
-            ))}
-            {(activeTag || query) && (
+          {query && (
+            <div className="flex flex-wrap gap-2">
               <Link href={`/${category}`}>
-                <Badge className="bg-rose-500/10 text-rose-300">Clear Filters</Badge>
+                <Badge className="bg-rose-500/10 text-rose-300">Clear Search</Badge>
               </Link>
-            )}
-          </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 

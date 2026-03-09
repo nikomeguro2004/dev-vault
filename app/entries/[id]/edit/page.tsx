@@ -33,7 +33,7 @@ export default async function EditEntryPage({
             <span>/</span>
           </>
         )}
-        <Link href={`/entries/${id}`} className="max-w-[160px] truncate transition-colors hover:text-zinc-300">
+        <Link href={`/entries/${id}`} className="max-w-40 truncate transition-colors hover:text-zinc-300">
           {entry.title}
         </Link>
         <span>/</span>

@@ -23,33 +23,19 @@ create table if not exists entries (
   created_at timestamp with time zone not null default now()
 );
 
-create table if not exists tags (
-  id uuid primary key default gen_random_uuid(),
-  name text unique not null
-);
-
-create table if not exists entry_tags (
-  entry_id uuid not null references entries(id) on delete cascade,
-  tag_id uuid not null references tags(id) on delete cascade,
-  primary key (entry_id, tag_id)
-);
+drop table if exists entry_tags;
+drop table if exists tags;
 
 create index if not exists idx_entries_category_id on entries (category_id);
 create index if not exists idx_entries_title on entries using gin (to_tsvector('english', title));
 create index if not exists idx_entries_description on entries using gin (to_tsvector('english', description));
 create unique index if not exists uq_entries_title_lower on entries ((lower(title)));
-create index if not exists idx_tags_name on tags (name);
-create index if not exists idx_entry_tags_tag_id on entry_tags(tag_id);
 
 alter table if exists categories enable row level security;
 alter table if exists entries enable row level security;
-alter table if exists tags enable row level security;
-alter table if exists entry_tags enable row level security;
 
 drop policy if exists categories_public_access on categories;
 drop policy if exists entries_public_access on entries;
-drop policy if exists tags_public_access on tags;
-drop policy if exists entry_tags_public_access on entry_tags;
 
 drop policy if exists categories_select_public on categories;
 drop policy if exists categories_insert_public on categories;
@@ -60,16 +46,6 @@ drop policy if exists entries_select_public on entries;
 drop policy if exists entries_insert_public on entries;
 drop policy if exists entries_update_public on entries;
 drop policy if exists entries_delete_public on entries;
-
-drop policy if exists tags_select_public on tags;
-drop policy if exists tags_insert_public on tags;
-drop policy if exists tags_update_public on tags;
-drop policy if exists tags_delete_public on tags;
-
-drop policy if exists entry_tags_select_public on entry_tags;
-drop policy if exists entry_tags_insert_public on entry_tags;
-drop policy if exists entry_tags_update_public on entry_tags;
-drop policy if exists entry_tags_delete_public on entry_tags;
 
 create policy categories_select_public
   on categories for select
@@ -99,42 +75,17 @@ create policy entries_delete_public
   on entries for delete
   using (auth.role() in ('anon', 'authenticated'));
 
-create policy tags_select_public
-  on tags for select
-  using (auth.role() in ('anon', 'authenticated'));
-create policy tags_insert_public
-  on tags for insert
-  with check (auth.role() in ('anon', 'authenticated'));
-create policy tags_update_public
-  on tags for update
-  using (auth.role() in ('anon', 'authenticated'))
-  with check (auth.role() in ('anon', 'authenticated'));
-create policy tags_delete_public
-  on tags for delete
-  using (auth.role() in ('anon', 'authenticated'));
-
-create policy entry_tags_select_public
-  on entry_tags for select
-  using (auth.role() in ('anon', 'authenticated'));
-create policy entry_tags_insert_public
-  on entry_tags for insert
-  with check (auth.role() in ('anon', 'authenticated'));
-create policy entry_tags_update_public
-  on entry_tags for update
-  using (auth.role() in ('anon', 'authenticated'))
-  with check (auth.role() in ('anon', 'authenticated'));
-create policy entry_tags_delete_public
-  on entry_tags for delete
-  using (auth.role() in ('anon', 'authenticated'));
-
 insert into categories (name, slug)
 values
   ('Frameworks', 'frameworks'),
   ('Modules', 'modules'),
   ('Tools', 'tools'),
-  ('Prompts', 'prompts'),
   ('Effects', 'effects')
 on conflict (slug) do nothing;
+
+-- Remove legacy prompts category if it exists.
+-- Related entries are removed via FK cascade.
+delete from categories where slug = 'prompts';
 
 -- Sample entries
 insert into entries (
@@ -195,20 +146,3 @@ and not exists (
   select 1 from entries e where e.title = 'Docker'
 );
 
-insert into tags (name)
-values ('nextjs'), ('react'), ('ssr'), ('containers'), ('devops')
-on conflict (name) do nothing;
-
-insert into entry_tags (entry_id, tag_id)
-select e.id, t.id
-from entries e
-join tags t on t.name in ('nextjs', 'react', 'ssr')
-where e.title = 'Next.js'
-on conflict do nothing;
-
-insert into entry_tags (entry_id, tag_id)
-select e.id, t.id
-from entries e
-join tags t on t.name in ('containers', 'devops')
-where e.title = 'Docker'
-on conflict do nothing;

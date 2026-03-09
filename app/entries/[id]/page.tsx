@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Calendar, ChevronLeft, Pencil, Tag } from "lucide-react";
+import { Calendar, ChevronLeft, Pencil } from "lucide-react";
 import type { Metadata } from "next";
 
 import { MarkdownRenderer } from "@/components/markdown-renderer";
@@ -54,11 +54,11 @@ export default async function EntryPage({
           {entry.category?.name ?? "Unknown"}
         </Link>
         <span>/</span>
-        <span className="max-w-[220px] truncate text-zinc-300">{entry.title}</span>
+        <span className="max-w-55 truncate text-zinc-300">{entry.title}</span>
       </nav>
 
       {/* Hero Header */}
-      <header className="rounded-3xl border border-white/10 bg-[var(--panel)] p-7 shadow-xl backdrop-blur-xl sm:p-10">
+      <header className="rounded-3xl border border-white/10 bg-(--panel) p-7 shadow-xl backdrop-blur-xl sm:p-10">
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-2">
             <Badge>{entry.category?.name ?? "Unknown"}</Badge>
@@ -69,14 +69,6 @@ export default async function EntryPage({
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{entry.title}</h1>
           <p className="max-w-3xl text-lg leading-relaxed text-zinc-300">{entry.description}</p>
-          {entry.tags.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2 pt-1">
-              <Tag className="h-3.5 w-3.5 text-zinc-500" />
-              {entry.tags.map((tag) => (
-                <Badge key={tag.id}>#{tag.name}</Badge>
-              ))}
-            </div>
-          )}
         </div>
         <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-white/10 pt-6">
           <Link href={`/entries/${entry.id}/edit`}>

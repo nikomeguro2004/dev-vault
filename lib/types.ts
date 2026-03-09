@@ -5,11 +5,6 @@ export type Category = {
   created_at: string;
 };
 
-export type Tag = {
-  id: string;
-  name: string;
-};
-
 export type Entry = {
   id: string;
   title: string;
@@ -31,7 +26,6 @@ export type EntryWithRelations = Entry & {
     name: string;
     slug: string;
   } | null;
-  tags: Tag[];
 };
 
 /**
@@ -46,7 +40,6 @@ export type EntryListItem = {
   category_id: string;
   created_at: string;
   category?: { id: string; name: string; slug: string } | null;
-  tags: Tag[];
 };
 
 export type EntryInput = {
@@ -60,5 +53,4 @@ export type EntryInput = {
   cons: string;
   example_code: string;
   notes: string;
-  tags: string[];
 };

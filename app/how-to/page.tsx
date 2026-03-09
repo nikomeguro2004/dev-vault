@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, ChevronLeft, Code2, Hash, LayoutList, Lightbulb, Pencil, Tag } from "lucide-react";
+import { ArrowRight, BookOpen, ChevronLeft, Code2, LayoutList, Lightbulb, Pencil } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,7 @@ export default function HowToPage() {
       </nav>
 
       {/* Header */}
-      <header className="hero-glow rounded-3xl border border-white/10 bg-[var(--panel)] p-8 shadow-xl backdrop-blur-xl sm:p-10">
+      <header className="hero-glow rounded-3xl border border-white/10 bg-(--panel) p-8 shadow-xl backdrop-blur-xl sm:p-10">
         <div className="space-y-4">
           <div className="flex items-center gap-3">
             <span className="h-2 w-2 animate-pulse rounded-full bg-cyan-400" />
@@ -34,7 +34,7 @@ export default function HowToPage() {
           </h1>
           <p className="max-w-2xl text-lg leading-relaxed text-zinc-300">
             This guide explains how to create well-structured entries, use markdown
-            formatting, write useful code examples, and organise with tags.
+            formatting, and write useful code examples.
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
             <Link href="/entries/new">
@@ -60,12 +60,12 @@ export default function HowToPage() {
             { href: "#fields", icon: <LayoutList className="h-4 w-4" />, label: "Field guide" },
             { href: "#markdown", icon: <BookOpen className="h-4 w-4" />, label: "Markdown syntax" },
             { href: "#code", icon: <Code2 className="h-4 w-4" />, label: "Code examples" },
-            { href: "#tags", icon: <Tag className="h-4 w-4" />, label: "Tags & categories" },
+            { href: "#categories", icon: <LayoutList className="h-4 w-4" />, label: "Categories" },
           ].map(({ href, icon, label }) => (
             <a
               key={href}
               href={href}
-              className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-[var(--panel)] px-4 py-3 text-sm font-medium text-zinc-300 backdrop-blur-xl transition-all hover:border-white/20 hover:text-white"
+              className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-(--panel) px-4 py-3 text-sm font-medium text-zinc-300 backdrop-blur-xl transition-all hover:border-white/20 hover:text-white"
             >
               <span className="text-cyan-400">{icon}</span>
               {label}
@@ -87,11 +87,10 @@ export default function HowToPage() {
             <ol className="space-y-3">
               {[
                 { n: 1, label: "Go to dashboard", desc: 'Click "Add Entry" or navigate to a category and click the + button.' },
-                { n: 2, label: "Choose a category", desc: "Pick the most relevant category: Frameworks, Modules, Tools, Prompts, or Effects." },
+                { n: 2, label: "Choose a category", desc: "Pick the most relevant category: Frameworks, Modules, Tools, or Effects." },
                 { n: 3, label: "Fill in the core fields", desc: "Title, description, and category are the minimum required to save an entry." },
                 { n: 4, label: "Add knowledge blocks", desc: "Write what it is, how it works, when to use it, pros/cons, and a code example." },
-                { n: 5, label: "Add tags", desc: "Enter comma-separated tags to make the entry filterable across the vault." },
-                { n: 6, label: "Save", desc: 'Click "Create Entry". The entry is immediately saved and searchable.' },
+                { n: 5, label: "Save", desc: 'Click "Create Entry". The entry is immediately saved and searchable.' },
               ].map(({ n, label, desc }) => (
                 <li key={n} className="flex gap-3">
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan-500/20 text-xs font-bold text-cyan-300">
@@ -210,61 +209,35 @@ const client = createClient({ url: '...' })
         </Card>
       </section>
 
-      {/* Tags & Categories */}
-      <section id="tags" className="space-y-4 scroll-mt-24">
-        <SectionHeader step="05" title="Tags & categories" />
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Hash className="h-4 w-4 text-cyan-400" />
-                <CardTitle className="text-base">Tags</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <p className="text-sm text-zinc-300 leading-relaxed">
-                Tags are free-form and comma-separated. Use them to group entries across categories.
-              </p>
-              <pre className="rounded-lg bg-zinc-900/60 px-3 py-2 text-xs text-zinc-300">
-                <code>react, ssr, caching, auth</code>
-              </pre>
-              <ul className="space-y-1.5 text-xs text-zinc-400">
-                <li className="flex items-center gap-1.5"><span className="text-cyan-500">•</span> Use lowercase, no spaces</li>
-                <li className="flex items-center gap-1.5"><span className="text-cyan-500">•</span> Separate with commas</li>
-                <li className="flex items-center gap-1.5"><span className="text-cyan-500">•</span> Maximum 10–15 tags per entry</li>
-                <li className="flex items-center gap-1.5"><span className="text-cyan-500">•</span> Tags appear as filters on category pages</li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <LayoutList className="h-4 w-4 text-sky-400" />
-                <CardTitle className="text-base">Categories</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <p className="text-sm text-zinc-300 leading-relaxed">
-                There are 5 fixed categories. Choose the one that best matches the entry&apos;s type.
-              </p>
-              <ul className="space-y-2 text-xs text-zinc-400">
-                {[
-                  { name: "Frameworks", desc: "Architecture, runtime, ecosystems" },
-                  { name: "Modules", desc: "Reusable patterns: auth, cache, pagination" },
-                  { name: "Tools", desc: "Dev tooling, CLIs, infra" },
-                  { name: "Prompts", desc: "High-leverage LLM prompts" },
-                  { name: "Effects", desc: "Visual, animation, UI motion" },
-                ].map(({ name, desc }) => (
-                  <li key={name} className="flex items-center gap-2">
-                    <span className="font-medium text-zinc-300 w-24 shrink-0">{name}</span>
-                    <span>{desc}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
+      {/* Categories */}
+      <section id="categories" className="space-y-4 scroll-mt-24">
+        <SectionHeader step="05" title="Categories" />
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <LayoutList className="h-4 w-4 text-sky-400" />
+              <CardTitle className="text-base">Categories</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-sm text-zinc-300 leading-relaxed">
+              There are 4 fixed categories. Choose the one that best matches the entry&apos;s type.
+            </p>
+            <ul className="space-y-2 text-xs text-zinc-400">
+              {[
+                { name: "Frameworks", desc: "Architecture, runtime, ecosystems" },
+                { name: "Modules", desc: "Reusable patterns: auth, cache, pagination" },
+                { name: "Tools", desc: "Dev tooling, CLIs, infra" },
+                { name: "Effects", desc: "Visual, animation, UI motion" },
+              ].map(({ name, desc }) => (
+                <li key={name} className="flex items-center gap-2">
+                  <span className="w-24 shrink-0 font-medium text-zinc-300">{name}</span>
+                  <span>{desc}</span>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
       </section>
 
       {/* Tips */}
@@ -274,7 +247,7 @@ const client = createClient({ url: '...' })
           {TIPS.map(({ title, description }) => (
             <div
               key={title}
-              className="flex gap-3 rounded-xl border border-white/10 bg-[var(--panel)] p-4 backdrop-blur-xl"
+              className="flex gap-3 rounded-xl border border-white/10 bg-(--panel) p-4 backdrop-blur-xl"
             >
               <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
               <div>
@@ -287,7 +260,7 @@ const client = createClient({ url: '...' })
       </section>
 
       {/* CTA */}
-      <div className="rounded-2xl border border-white/10 bg-[var(--panel)] p-6 backdrop-blur-xl text-center space-y-4">
+      <div className="rounded-2xl border border-white/10 bg-(--panel) p-6 backdrop-blur-xl text-center space-y-4">
         <h2 className="text-xl font-semibold text-white">Ready to start?</h2>
         <p className="text-zinc-400">Create your first entry and start building your personal dev reference vault.</p>
         <Link href="/entries/new">
@@ -331,14 +304,6 @@ const FIELD_GUIDE = [
     name: "Category",
     required: true,
     description: "The primary category bucket. Drives navigation and filtering across the vault.",
-  },
-  {
-    name: "Tags",
-    required: false,
-    description:
-      "Comma-separated keywords that describe the entry. Tags appear as clickable filters on category pages.",
-    tip: "Use consistent naming. Pick 3–10 tags per entry. Prefer singular nouns: 'cache' not 'caching'.",
-    example: "react, nextjs, server-components, rsc, streaming",
   },
   {
     name: "What it is",
@@ -422,11 +387,6 @@ const TIPS = [
     title: "Keep code examples minimal",
     description:
       "A 10-line snippet that captures the core pattern is more useful than a full module copy-paste.",
-  },
-  {
-    title: "Tag consistently",
-    description:
-      "Before adding a new tag, check if a similar one already exists in the vault to keep filters clean.",
   },
   {
     title: "Link related entries in Notes",

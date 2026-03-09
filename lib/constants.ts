@@ -2,7 +2,6 @@ export const CATEGORY_SLUGS = [
   "frameworks",
   "modules",
   "tools",
-  "prompts",
   "effects",
 ] as const;
 
@@ -26,11 +25,6 @@ export const CATEGORY_META: Record<
     title: "Tools",
     description: "Dev tooling and infrastructure knowledge snapshots.",
     gradient: "from-amber-400/70 via-orange-500/60 to-rose-500/70",
-  },
-  prompts: {
-    title: "Prompts",
-    description: "High-leverage prompts for coding and architecture workflows.",
-    gradient: "from-fuchsia-400/70 via-pink-500/60 to-rose-500/70",
   },
   effects: {
     title: "Effects",

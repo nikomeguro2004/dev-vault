@@ -24,17 +24,6 @@ function parsePayload(formData: FormData) {
     cons: String(formData.get("cons") ?? "").trim(),
     example_code: String(formData.get("example_code") ?? "").trim(),
     notes: String(formData.get("notes") ?? "").trim(),
-    tags: String(formData.get("tags") ?? "")
-      .split(",")
-      .map((t) =>
-        t
-          .trim()
-          .toLowerCase()
-          .replace(/[^a-z0-9\-\.]/g, "")
-          .slice(0, 50),
-      )
-      .filter(Boolean)
-      .slice(0, 20),
   };
 }
 
