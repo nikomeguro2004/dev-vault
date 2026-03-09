@@ -221,17 +221,20 @@ const client = createClient({ url: '...' })
           </CardHeader>
           <CardContent className="space-y-3">
             <p className="text-sm text-zinc-300 leading-relaxed">
-              There are 4 fixed categories. Choose the one that best matches the entry&apos;s type.
+              There are 7 fixed categories. Choose the one that best matches the entry&apos;s type.
             </p>
             <ul className="space-y-2 text-xs text-zinc-400">
               {[
                 { name: "Frameworks", desc: "Architecture, runtime, ecosystems" },
                 { name: "Modules", desc: "Reusable patterns: auth, cache, pagination" },
                 { name: "Tools", desc: "Dev tooling, CLIs, infra" },
+                { name: "Backend Concepts", desc: "APIs, messaging, caching, reliability" },
+                { name: "DevOps", desc: "CI/CD, infra, monitoring, operations" },
+                { name: "Platforms", desc: "Cloud/hosting products and managed stacks" },
                 { name: "Effects", desc: "Visual, animation, UI motion" },
               ].map(({ name, desc }) => (
                 <li key={name} className="flex items-center gap-2">
-                  <span className="w-24 shrink-0 font-medium text-zinc-300">{name}</span>
+                  <span className="w-36 shrink-0 font-medium text-zinc-300">{name}</span>
                   <span>{desc}</span>
                 </li>
               ))}

@@ -80,6 +80,9 @@ values
   ('Frameworks', 'frameworks'),
   ('Modules', 'modules'),
   ('Tools', 'tools'),
+  ('Backend Concepts', 'backend-concepts'),
+  ('DevOps', 'devops'),
+  ('Platforms', 'platforms'),
   ('Effects', 'effects')
 on conflict (slug) do nothing;
 

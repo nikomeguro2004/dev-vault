@@ -19,7 +19,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-2 md:flex">
+        <nav className="hidden items-center gap-2 lg:flex">
           {CATEGORY_SLUGS.map((slug) => {
             const href = `/${slug}`;
             const active = pathname === href;
@@ -55,7 +55,7 @@ export function SiteHeader() {
 
       </div>
 
-      <div className="border-t border-white/10 px-4 pb-3 md:hidden">
+      <div className="border-t border-white/10 px-4 pb-3 lg:hidden">
         <nav className="no-scrollbar flex gap-2 overflow-x-auto pt-3">
           {CATEGORY_SLUGS.map((slug) => {
             const href = `/${slug}`;

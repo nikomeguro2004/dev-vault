@@ -2,6 +2,9 @@ export const CATEGORY_SLUGS = [
   "frameworks",
   "modules",
   "tools",
+  "backend-concepts",
+  "devops",
+  "platforms",
   "effects",
 ] as const;
 
@@ -25,6 +28,21 @@ export const CATEGORY_META: Record<
     title: "Tools",
     description: "Dev tooling and infrastructure knowledge snapshots.",
     gradient: "from-amber-400/70 via-orange-500/60 to-rose-500/70",
+  },
+  "backend-concepts": {
+    title: "Backend Concepts",
+    description: "API, data, messaging, and reliability patterns for backend systems.",
+    gradient: "from-lime-400/70 via-emerald-500/60 to-cyan-600/70",
+  },
+  devops: {
+    title: "DevOps",
+    description: "CI/CD, infrastructure, observability, and deployment operations.",
+    gradient: "from-orange-400/70 via-red-500/60 to-rose-600/70",
+  },
+  platforms: {
+    title: "Platforms",
+    description: "Managed cloud and hosting platforms used to run and scale apps.",
+    gradient: "from-sky-400/70 via-blue-500/60 to-violet-600/70",
   },
   effects: {
     title: "Effects",

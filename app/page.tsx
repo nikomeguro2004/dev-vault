@@ -33,7 +33,7 @@ export default async function Home() {
               </span>
             </h1>
             <p className="text-lg leading-relaxed text-zinc-300">
-              Frameworks, modules, tools, and effects — all documented and searchable in one place.
+              Frameworks, backend concepts, DevOps, platforms, and more — all documented and searchable in one place.
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               <Link href="/entries/new">
@@ -61,6 +61,7 @@ export default async function Home() {
             <StatCard icon={<Layers className="h-5 w-5 text-cyan-400" />} value={String(totalEntries)} label="Entries" />
             <StatCard icon={<Zap className="h-5 w-5 text-indigo-400" />} value={String(CATEGORY_SLUGS.length)} label="Categories" />
             <StatCard icon={<BookOpen className="h-5 w-5 text-violet-400" />} value="Always" label="Updated" />
+            <StatCard icon={<Plus className="h-5 w-5 text-emerald-400" />} value={String(recentEntries.length)} label="Recent" />
           </div>
         </div>
       </section>
@@ -71,7 +72,7 @@ export default async function Home() {
           <h2 className="text-xl font-semibold text-white">Browse Categories</h2>
           <span className="text-sm text-zinc-500">{CATEGORY_SLUGS.length} categories</span>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
           {CATEGORY_SLUGS.map((slug) => (
             <Link key={slug} href={`/${slug}`} className="group block">
               <div className="relative h-full overflow-hidden rounded-2xl border border-white/10 bg-(--panel) p-5 backdrop-blur-xl transition-all duration-300 group-hover:-translate-y-1 group-hover:border-white/20 group-hover:shadow-xl group-hover:shadow-cyan-500/10">

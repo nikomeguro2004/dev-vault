@@ -7,7 +7,7 @@ Personal developer knowledge hub — a structured reference vault for frameworks
 ## Features
 
 - **Dashboard home** — hero with live stats (entry count and category count), category grid with gradient cards, recent entries, and a first-time guide nudge
-- **4 category pages** — `/frameworks`, `/modules`, `/tools`, `/effects` — each with search and entry grid
+- **7 category pages** — `/frameworks`, `/modules`, `/tools`, `/backend-concepts`, `/devops`, `/platforms`, `/effects` — each with search and entry grid
 - **Entry detail pages** — breadcrumb nav, colour-coded knowledge sections (What it is, How it works, When to use, Pros/Cons), syntax-highlighted code block with copy button, and notes
 - **Create / Edit** — write and update entries via Next.js Server Actions with server-side validation
 - **How To page** — step-by-step guide, field reference, markdown cheatsheet, code formatting tips, categories reference
