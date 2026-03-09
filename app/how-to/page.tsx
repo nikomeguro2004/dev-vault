@@ -87,7 +87,7 @@ export default function HowToPage() {
             <ol className="space-y-3">
               {[
                 { n: 1, label: "Go to dashboard", desc: 'Click "Add Entry" or navigate to a category and click the + button.' },
-                { n: 2, label: "Choose a category", desc: "Pick the most relevant category: Frameworks, Modules, Tools, Backend Concepts, DevOps, Platforms, or Effects." },
+                { n: 2, label: "Choose a category", desc: "Pick the most relevant category: Frameworks, Modules, Tools, Packages, Backend Concepts, DevOps, Platforms, or Effects." },
                 { n: 3, label: "Fill in the core fields", desc: "Title, description, and category are the minimum required to save an entry." },
                 { n: 4, label: "Add knowledge blocks", desc: "Write when to use it, pros/cons, and any contextual notes for future you." },
                 { n: 5, label: "Save", desc: 'Click "Create Entry". The entry is immediately saved and searchable.' },
@@ -257,13 +257,14 @@ It's good.`}</code>
           </CardHeader>
           <CardContent className="space-y-3">
             <p className="text-sm text-zinc-300 leading-relaxed">
-              There are 7 fixed categories. Choose the one that best matches the entry&apos;s type.
+              There are 8 fixed categories. Choose the one that best matches the entry&apos;s type.
             </p>
             <ul className="space-y-2 text-xs text-zinc-400">
               {[
                 { name: "Frameworks", desc: "Architecture, runtime, ecosystems" },
                 { name: "Modules", desc: "Reusable patterns: auth, cache, pagination" },
                 { name: "Tools", desc: "Dev tooling, CLIs, infra" },
+                { name: "Packages", desc: "Common npm libraries and utilities" },
                 { name: "Backend Concepts", desc: "APIs, messaging, caching, reliability" },
                 { name: "DevOps", desc: "CI/CD, infra, monitoring, operations" },
                 { name: "Platforms", desc: "Cloud/hosting products and managed stacks" },

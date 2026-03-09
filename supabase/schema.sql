@@ -82,6 +82,7 @@ values
   ('Frameworks', 'frameworks'),
   ('Modules', 'modules'),
   ('Tools', 'tools'),
+  ('Packages', 'packages'),
   ('Backend Concepts', 'backend-concepts'),
   ('DevOps', 'devops'),
   ('Platforms', 'platforms'),

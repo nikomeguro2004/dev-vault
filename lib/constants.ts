@@ -2,6 +2,7 @@ export const CATEGORY_SLUGS = [
   "frameworks",
   "modules",
   "tools",
+  "packages",
   "backend-concepts",
   "devops",
   "platforms",
@@ -28,6 +29,11 @@ export const CATEGORY_META: Record<
     title: "Tools",
     description: "Dev tooling and infrastructure knowledge snapshots.",
     gradient: "from-amber-400/70 via-orange-500/60 to-rose-500/70",
+  },
+  packages: {
+    title: "Packages",
+    description: "Common npm libraries and practical usage references.",
+    gradient: "from-fuchsia-400/70 via-pink-500/60 to-rose-600/70",
   },
   "backend-concepts": {
     title: "Backend Concepts",
