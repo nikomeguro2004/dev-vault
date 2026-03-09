@@ -1,125 +1,81 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, ChevronLeft, LayoutList, Lightbulb, Pencil } from "lucide-react";
+import { ArrowRight, ChevronLeft, Pencil } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const metadata = {
-  title: "How to Use — Developer Knowledge Hub",
-  description: "Learn how to add and format entries in your developer vault.",
+  title: "How to Use - Developer Knowledge Hub",
+  description: "Entry structure and writing guidance for the developer vault.",
 };
 
 export default function HowToPage() {
   return (
-    <div className="mx-auto max-w-4xl space-y-12 pb-8">
-      {/* Breadcrumb */}
+    <div className="mx-auto max-w-5xl space-y-10 pb-8">
       <nav className="flex items-center gap-2 text-sm text-zinc-500" aria-label="Breadcrumb">
-        <Link href="/" className="transition-colors hover:text-zinc-300">Home</Link>
+        <Link href="/" className="transition-colors hover:text-zinc-300">
+          Home
+        </Link>
         <span>/</span>
         <span className="text-zinc-300">How to Use</span>
       </nav>
 
-      {/* Header */}
-      <header className="hero-glow rounded-3xl border border-white/10 bg-(--panel) p-8 shadow-xl backdrop-blur-xl sm:p-10">
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-cyan-400" />
-            <span className="font-mono text-xs font-medium uppercase tracking-widest text-cyan-400">
-              Documentation
-            </span>
-          </div>
-          <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            How to use the vault
-          </h1>
-          <p className="max-w-2xl text-lg leading-relaxed text-zinc-300">
-            This guide shows the current entry template and how to write concise,
-            useful notes you can trust later during real project work.
-          </p>
-          <div className="flex flex-wrap gap-3 pt-2">
-            <Link href="/entries/new">
-              <Button size="lg">
-                <Pencil className="mr-2 h-4 w-4" />
-                Create an Entry
-              </Button>
-            </Link>
-            <Link href="/">
-              <Button variant="secondary" size="lg">
-                <ChevronLeft className="mr-2 h-4 w-4" />
-                Back to Dashboard
-              </Button>
-            </Link>
-          </div>
+      <header className="space-y-5 border-b border-white/15 pb-8">
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-500">Guide</p>
+        <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+          Write entries that are easy to scan and easy to trust.
+        </h1>
+        <p className="max-w-2xl text-zinc-300">
+          Keep each entry practical. Focus on where it fits, where it fails, and the trade-offs that matter.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/entries/new">
+            <Button>
+              <Pencil className="mr-2 h-4 w-4" />
+              Create Entry
+            </Button>
+          </Link>
+          <Link href="/">
+            <Button variant="secondary">
+              <ChevronLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Button>
+          </Link>
         </div>
       </header>
 
-      {/* Quick links */}
-      <nav aria-label="Page sections">
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { href: "#fields", icon: <LayoutList className="h-4 w-4" />, label: "Field guide" },
-            { href: "#markdown", icon: <BookOpen className="h-4 w-4" />, label: "Markdown syntax" },
-            { href: "#writing", icon: <BookOpen className="h-4 w-4" />, label: "Writing style" },
-            { href: "#categories", icon: <LayoutList className="h-4 w-4" />, label: "Categories" },
-          ].map(({ href, icon, label }) => (
-            <a
-              key={href}
-              href={href}
-              className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-(--panel) px-4 py-3 text-sm font-medium text-zinc-300 backdrop-blur-xl transition-all hover:border-white/20 hover:text-white"
-            >
-              <span className="text-cyan-400">{icon}</span>
-              {label}
-              <ArrowRight className="ml-auto h-3.5 w-3.5 text-zinc-600" />
-            </a>
-          ))}
-        </div>
-      </nav>
+      <div className="grid gap-8 lg:grid-cols-[220px_1fr]">
+        <aside className="lg:sticky lg:top-24 lg:h-fit">
+          <nav className="space-y-2 border-l border-white/15 pl-4 text-sm" aria-label="Sections">
+            {[
+              ["workflow", "Workflow"],
+              ["template", "Template"],
+              ["fields", "Field Guide"],
+              ["markdown", "Markdown"],
+              ["writing", "Writing"],
+              ["categories", "Categories"],
+            ].map(([href, label]) => (
+              <a key={href} href={`#${href}`} className="block text-zinc-400 transition-colors hover:text-white">
+                {label}
+              </a>
+            ))}
+          </nav>
+        </aside>
 
-      {/* Step 1: Creating an entry */}
-      <section className="space-y-4">
-        <SectionHeader step="01" title="Creating an entry" />
-        <Card>
-          <CardContent className="space-y-4 pt-6">
-            <p className="text-zinc-300 leading-relaxed">
-              Every entry in the vault follows a consistent structure with 6 fields. Some are required,
-              some optional — but the more you fill in, the more useful the entry will be later.
-            </p>
-            <ol className="space-y-3">
-              {[
-                { n: 1, label: "Go to dashboard", desc: 'Click "Add Entry" or navigate to a category and click the + button.' },
-                { n: 2, label: "Choose a category", desc: "Pick the most relevant category: Frameworks, Tools, Packages, Backend Concepts, DevOps, Platforms, or Effects." },
-                { n: 3, label: "Fill in the core fields", desc: "Title, description, and category are the minimum required to save an entry." },
-                { n: 4, label: "Add knowledge blocks", desc: "Write when to use it, pros/cons, and any contextual notes for future you." },
-                { n: 5, label: "Save", desc: 'Click "Create Entry". The entry is immediately saved and searchable.' },
-              ].map(({ n, label, desc }) => (
-                <li key={n} className="flex gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan-500/20 text-xs font-bold text-cyan-300">
-                    {n}
-                  </span>
-                  <div>
-                    <span className="font-medium text-zinc-200">{label}</span>{" "}
-                    <span className="text-zinc-400">{desc}</span>
-                  </div>
-                </li>
-              ))}
+        <main className="space-y-8">
+          <GuideSection id="workflow" index="01" title="Workflow">
+            <ol className="space-y-2 text-sm text-zinc-300">
+              <li>1. Open a category or click Add Entry.</li>
+              <li>2. Pick the most accurate category first.</li>
+              <li>3. Fill title, description, and trade-off fields.</li>
+              <li>4. Save and refine later as your understanding improves.</li>
             </ol>
-          </CardContent>
-        </Card>
-      </section>
+          </GuideSection>
 
-      {/* Current template */}
-      <section className="space-y-4">
-        <SectionHeader step="02" title="Current Template" />
-        <Card>
-          <CardContent className="space-y-4 pt-6">
-            <p className="text-zinc-300 leading-relaxed">
-              Each entry now uses a simplified model focused on decision quality.
-              Keep entries practical and scannable.
-            </p>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300">Required</p>
-                <ul className="mt-2 space-y-1 text-sm text-zinc-200">
+          <GuideSection id="template" index="02" title="Current Template">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-xl border border-white/15 p-4">
+                <p className="text-xs uppercase tracking-wider text-zinc-500">Required</p>
+                <ul className="mt-3 space-y-1 text-sm text-zinc-200">
                   <li>Title</li>
                   <li>Description</li>
                   <li>Category</li>
@@ -128,285 +84,148 @@ export default function HowToPage() {
                   <li>Cons</li>
                 </ul>
               </div>
-              <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-cyan-300">Optional</p>
-                <ul className="mt-2 space-y-1 text-sm text-zinc-200">
+              <div className="rounded-xl border border-white/15 p-4">
+                <p className="text-xs uppercase tracking-wider text-zinc-500">Optional</p>
+                <ul className="mt-3 space-y-1 text-sm text-zinc-200">
                   <li>Notes</li>
                 </ul>
-                <p className="mt-3 text-xs text-zinc-400">
-                  Use Notes for links, migration caveats, and team conventions.
-                </p>
+                <p className="mt-3 text-xs text-zinc-400">Use Notes for links, caveats, and team conventions.</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </section>
+          </GuideSection>
 
-      {/* Field guide */}
-      <section id="fields" className="space-y-4 scroll-mt-24">
-        <SectionHeader step="03" title="Field guide" />
-        <div className="grid gap-4">
-          {FIELD_GUIDE.map((field) => (
-            <Card key={field.name} className="border-l-4 border-l-cyan-500/40">
-              <CardHeader className="pb-2">
-                <div className="flex items-center gap-2">
-                  <CardTitle className="text-base">{field.name}</CardTitle>
-                  {field.required && (
-                    <Badge className="border-rose-500/30 bg-rose-500/10 text-rose-300">Required</Badge>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <p className="text-sm text-zinc-300">{field.description}</p>
-                {field.tip && (
-                  <div className="flex items-start gap-2 rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2">
-                    <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-400" />
-                    <p className="text-xs text-amber-200/80">{field.tip}</p>
-                  </div>
-                )}
-                {field.example && (
-                  <pre className="overflow-x-auto rounded-lg bg-zinc-900/60 px-3 py-2 text-xs text-zinc-300">
-                    <code>{field.example}</code>
-                  </pre>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+          <GuideSection id="fields" index="03" title="Field Guide">
+            <div className="overflow-x-auto rounded-xl border border-white/15">
+              <table className="w-full min-w-[600px] text-left text-sm">
+                <thead className="border-b border-white/15 text-xs uppercase tracking-wider text-zinc-500">
+                  <tr>
+                    <th className="px-4 py-3">Field</th>
+                    <th className="px-4 py-3">Required</th>
+                    <th className="px-4 py-3">What to write</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {FIELD_ROWS.map((row) => (
+                    <tr key={row.field} className="border-b border-white/10 last:border-none">
+                      <td className="px-4 py-3 font-medium text-zinc-100">{row.field}</td>
+                      <td className="px-4 py-3 text-zinc-300">{row.required}</td>
+                      <td className="px-4 py-3 text-zinc-400">{row.detail}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </GuideSection>
 
-      {/* Markdown guide */}
-      <section id="markdown" className="space-y-4 scroll-mt-24">
-        <SectionHeader step="04" title="Markdown syntax" />
-        <Card>
-          <CardContent className="pt-6">
-            <p className="mb-4 text-sm text-zinc-400">
-              All long-form fields (When to use, Pros, Cons, Notes) support GitHub-flavoured markdown.
-            </p>
+          <GuideSection id="markdown" index="04" title="Markdown">
             <div className="grid gap-3 sm:grid-cols-2">
-              {MARKDOWN_CHEATSHEET.map(({ syntax, output, description }) => (
-                <div
-                  key={syntax}
-                  className="rounded-xl border border-white/10 bg-zinc-900/40 px-4 py-3"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="space-y-1">
-                      <p className="font-mono text-xs text-zinc-400">{syntax}</p>
-                      <p className="text-sm font-medium text-zinc-200">{output}</p>
-                    </div>
-                    <span className="shrink-0 text-xs text-zinc-600">{description}</span>
-                  </div>
+              {MARKDOWN_ROWS.map((item) => (
+                <div key={item.syntax} className="rounded-xl border border-white/15 p-3">
+                  <p className="font-mono text-xs text-zinc-400">{item.syntax}</p>
+                  <p className="mt-1 text-sm text-zinc-200">{item.output}</p>
+                  <p className="mt-1 text-xs text-zinc-500">{item.note}</p>
                 </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
-      </section>
+          </GuideSection>
 
-      {/* Writing style */}
-      <section id="writing" className="space-y-4 scroll-mt-24">
-        <SectionHeader step="05" title="Writing style" />
-        <Card>
-          <CardContent className="space-y-4 pt-6">
-            <p className="text-sm text-zinc-300 leading-relaxed">
-              Focus on practical guidance in <strong className="text-zinc-100">When to use</strong>,
-              <strong className="text-zinc-100"> Pros</strong>, and <strong className="text-zinc-100">Cons</strong>.
-              Use concise bullet lists so entries are easy to scan during real project work.
-            </p>
-
-            <div className="space-y-2">
-              <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">Good pattern ✓</p>
-              <pre className="overflow-x-auto rounded-xl bg-zinc-900/70 px-4 py-3 text-xs text-zinc-300">
-                <code>{`When to use
-- Use for medium-to-large teams that need strong conventions.
-- Avoid for tiny throwaway projects where setup cost is not justified.`}</code>
-              </pre>
+          <GuideSection id="writing" index="05" title="Writing Rules">
+            <div className="space-y-4">
+              <div className="rounded-xl border border-white/15 p-4">
+                <p className="text-xs uppercase tracking-wider text-zinc-500">Good</p>
+                <pre className="mt-2 overflow-x-auto text-xs text-zinc-300"><code>{GOOD_EXAMPLE}</code></pre>
+              </div>
+              <div className="rounded-xl border border-white/15 p-4">
+                <p className="text-xs uppercase tracking-wider text-zinc-500">Avoid</p>
+                <pre className="mt-2 overflow-x-auto text-xs text-zinc-400"><code>{BAD_EXAMPLE}</code></pre>
+              </div>
             </div>
+          </GuideSection>
 
-            <div className="space-y-2">
-              <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">Avoid this ✗</p>
-              <pre className="overflow-x-auto rounded-xl border border-rose-500/20 bg-rose-900/10 px-4 py-3 text-xs text-zinc-400">
-                <code>{`When to use
-Sometimes use it.
-
-Pros
-It's good.`}</code>
-              </pre>
-              <p className="text-xs text-zinc-500">Vague notes age poorly. Be specific about context, constraints, and trade-offs.</p>
-            </div>
-
-            <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 px-4 py-3">
-              <p className="text-sm text-cyan-200">
-                <strong>Tip:</strong> Use the Notes field for links, migration caveats, and implementation gotchas that
-                don&apos;t fit the main sections.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </section>
-
-      {/* Categories */}
-      <section id="categories" className="space-y-4 scroll-mt-24">
-        <SectionHeader step="06" title="Categories" />
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <LayoutList className="h-4 w-4 text-sky-400" />
-              <CardTitle className="text-base">Categories</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-sm text-zinc-300 leading-relaxed">
-              There are 7 fixed categories. Choose the one that best matches the entry&apos;s type.
-            </p>
-            <ul className="space-y-2 text-xs text-zinc-400">
-              {[
-                { name: "Frameworks", desc: "Architecture, runtime, ecosystems" },
-                { name: "Tools", desc: "Dev tooling, CLIs, infra" },
-                { name: "Packages", desc: "Common npm libraries and utilities" },
-                { name: "Backend Concepts", desc: "APIs, messaging, caching, reliability" },
-                { name: "DevOps", desc: "CI/CD, infra, monitoring, operations" },
-                { name: "Platforms", desc: "Cloud/hosting products and managed stacks" },
-                { name: "Effects", desc: "Visual, animation, UI motion" },
-              ].map(({ name, desc }) => (
-                <li key={name} className="flex items-center gap-2">
-                  <span className="w-36 shrink-0 font-medium text-zinc-300">{name}</span>
-                  <span>{desc}</span>
+          <GuideSection id="categories" index="06" title="Categories">
+            <ul className="grid gap-2 text-sm text-zinc-300 sm:grid-cols-2">
+              {CATEGORIES.map((item) => (
+                <li key={item.name} className="rounded-xl border border-white/15 p-3">
+                  <p className="font-medium text-zinc-100">{item.name}</p>
+                  <p className="mt-1 text-xs text-zinc-400">{item.desc}</p>
                 </li>
               ))}
             </ul>
-          </CardContent>
-        </Card>
-      </section>
+          </GuideSection>
 
-      {/* Tips */}
-      <section className="space-y-4">
-        <SectionHeader step="07" title="Tips for great entries" />
-        <div className="grid gap-3 sm:grid-cols-2">
-          {TIPS.map(({ title, description }) => (
-            <div
-              key={title}
-              className="flex gap-3 rounded-xl border border-white/10 bg-(--panel) p-4 backdrop-blur-xl"
-            >
-              <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
-              <div>
-                <p className="text-sm font-medium text-zinc-200">{title}</p>
-                <p className="mt-0.5 text-xs leading-relaxed text-zinc-400">{description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA */}
-      <div className="rounded-2xl border border-white/10 bg-(--panel) p-6 backdrop-blur-xl text-center space-y-4">
-        <h2 className="text-xl font-semibold text-white">Ready to start?</h2>
-        <p className="text-zinc-400">Create your first entry and start building your personal dev reference vault.</p>
-        <Link href="/entries/new">
-          <Button size="lg">
-            <Pencil className="mr-2 h-4 w-4" />
-            Create an Entry
-          </Button>
-        </Link>
+          <section className="flex flex-wrap items-center justify-between gap-3 border-t border-white/15 pt-6">
+            <p className="text-sm text-zinc-400">Keep entries short and update them when your approach changes.</p>
+            <Link href="/entries/new" className="inline-flex items-center text-sm font-medium text-zinc-200 hover:text-white">
+              Start a new entry <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
+          </section>
+        </main>
       </div>
     </div>
   );
 }
 
-function SectionHeader({ step, title }: { step: string; title: string }) {
+function GuideSection({
+  id,
+  index,
+  title,
+  children,
+}: {
+  id: string;
+  index: string;
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="flex items-center gap-3">
-      <span className="font-mono text-xs font-bold text-cyan-500">{step}</span>
-      <h2 className="text-xl font-semibold text-white">{title}</h2>
-    </div>
+    <section id={id} className="space-y-3 scroll-mt-24">
+      <div className="flex items-baseline gap-3 border-b border-white/10 pb-2">
+        <span className="font-mono text-xs text-zinc-500">{index}</span>
+        <h2 className="text-2xl font-semibold tracking-tight text-white">{title}</h2>
+      </div>
+      {children}
+    </section>
   );
 }
 
-const FIELD_GUIDE = [
-  {
-    name: "Title",
-    required: true,
-    description:
-      "A short, specific name for the entry. Treat it like a doc page title — descriptive enough to find at a glance.",
-    tip: "Be specific. 'React Server Components' is better than 'RSC' or 'React stuff'.",
-    example: "React Server Components\nRedis Caching Strategy\nESLint Flat Config Setup",
-  },
-  {
-    name: "Description",
-    required: true,
-    description:
-      "One or two sentences summarising what this entry is. This text appears in search results and cards — make it scan-friendly.",
-    tip: "Write it as if explaining to a colleague in 10 seconds. No markdown here — plain prose works best.",
-    example: "A Next.js pattern for running components exclusively on the server, reducing client bundle size and enabling direct DB access.",
-  },
-  {
-    name: "Category",
-    required: true,
-    description: "The primary category bucket. Drives navigation and filtering across the vault.",
-  },
-  {
-    name: "When to use it",
-    required: true,
-    description:
-      "Describe ideal use cases and anti-patterns. Be honest about trade-offs.",
-    tip: "Include both 'use when' and 'avoid when' to make the entry more useful as reference.",
-  },
-  {
-    name: "Pros",
-    required: true,
-    description: "Key advantages. Use a markdown bullet list for readability.",
-    example: "- Smaller client bundle\n- Direct DB/API access without an extra layer\n- Improved initial page load",
-  },
-  {
-    name: "Cons",
-    required: true,
-    description: "Key drawbacks, limitations, or gotchas. Be candid.",
-    example: "- No access to browser APIs (window, localStorage)\n- Can't use useState or useEffect\n- Requires careful boundary planning",
-  },
-  {
-    name: "Notes",
-    required: false,
-    description:
-      "Catch-all for additional context, links, migration notes, or anything that doesn't fit elsewhere. Full markdown supported.",
-    tip: "Use this for external docs links, version-specific warnings, or related entries worth cross-referencing.",
-    example: "See also: [Streaming UI patterns](/entries/xyz)\n\nDocs: https://react.dev/reference/rsc/server-components",
-  },
+const FIELD_ROWS = [
+  { field: "Title", required: "Yes", detail: "Specific name that is easy to search later." },
+  { field: "Description", required: "Yes", detail: "One or two lines of plain summary." },
+  { field: "Category", required: "Yes", detail: "Choose the best-fit lane for navigation." },
+  { field: "When to use", required: "Yes", detail: "Include use cases and avoid cases." },
+  { field: "Pros", required: "Yes", detail: "Bullet list of clear benefits." },
+  { field: "Cons", required: "Yes", detail: "Bullet list of limits and costs." },
+  { field: "Notes", required: "No", detail: "Links, migration caveats, and extra context." },
 ];
 
-const MARKDOWN_CHEATSHEET = [
-  { syntax: "**bold**", output: "Bold text", description: "Strong emphasis" },
-  { syntax: "*italic*", output: "Italic text", description: "Emphasis" },
-  { syntax: "`code`", output: "Inline code", description: "Inline snippet" },
-  { syntax: "# Heading", output: "H1 heading", description: "Section title" },
-  { syntax: "## Heading", output: "H2 heading", description: "Subsection" },
-  { syntax: "- item", output: "Bullet list", description: "Unordered list" },
-  { syntax: "1. item", output: "Numbered list", description: "Ordered list" },
-  { syntax: "> text", output: "Blockquote", description: "Callout / quote" },
-  { syntax: "---", output: "Horizontal rule", description: "Divider" },
-  { syntax: "[text](url)", output: "Hyperlink", description: "External link" },
-  { syntax: "```ts\\ncode\\n```", output: "Code block", description: "Fenced code (Notes only)" },
-  { syntax: "| col | col |", output: "Table", description: "Markdown table" },
+const MARKDOWN_ROWS = [
+  { syntax: "**bold**", output: "Bold text", note: "Highlight key words" },
+  { syntax: "`code`", output: "Inline code", note: "Commands, APIs, config keys" },
+  { syntax: "- item", output: "Bullet list", note: "Best for pros/cons" },
+  { syntax: "1. item", output: "Numbered list", note: "Ordered steps" },
+  { syntax: "[text](url)", output: "Link", note: "Reference docs and specs" },
+  { syntax: "```ts code ```", output: "Code block", note: "Use in notes when needed" },
 ];
 
-const TIPS = [
-  {
-    title: "Write for future you",
-    description:
-      "Assume you'll read this 6 months from now with no context. Write what you'd wish you had documented.",
-  },
-  {
-    title: "Use bullet lists over paragraphs",
-    description:
-      "Pros, cons, and when-to-use fields are easier to scan as bullet lists.",
-  },
-  {
-    title: "Link related entries in Notes",
-    description:
-      "Use the Notes field to cross-reference other vault entries. It builds a personal knowledge graph over time.",
-  },
-  {
-    title: "Don't wait for perfection",
-    description:
-      "Stub entries with title, description, and a solid when-to-use section are already valuable. You can always edit later.",
-  },
+const GOOD_EXAMPLE = `When to use
+- Use in data-heavy pages with repeated API calls.
+- Avoid when data is static at build time.
+
+Pros
+- Better cache reuse across screens.
+- Reduces duplicate request logic.`;
+
+const BAD_EXAMPLE = `When to use
+Sometimes.
+
+Pros
+It is good.`;
+
+const CATEGORIES = [
+  { name: "Frameworks", desc: "Architecture, runtime, ecosystem choices" },
+  { name: "Tools", desc: "CLI tooling and developer workflow" },
+  { name: "Packages", desc: "Common npm dependencies" },
+  { name: "Backend Concepts", desc: "APIs, caching, reliability patterns" },
+  { name: "DevOps", desc: "CI/CD, infra, monitoring" },
+  { name: "Platforms", desc: "Cloud and hosting products" },
+  { name: "Effects", desc: "UI motion and interaction patterns" },
 ];

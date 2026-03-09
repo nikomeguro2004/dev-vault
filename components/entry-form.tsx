@@ -23,7 +23,7 @@ export function EntryForm({
 }) {
   return (
     <form action={action} className="space-y-5">
-      <Card className="border-white/15 bg-[linear-gradient(170deg,rgba(255,255,255,0.04),transparent_50%),var(--panel)]">
+      <Card>
         <CardHeader>
           <CardTitle>Core details</CardTitle>
         </CardHeader>
@@ -72,7 +72,7 @@ export function EntryForm({
         </CardContent>
       </Card>
 
-      <Card className="border-white/15 bg-[linear-gradient(170deg,rgba(255,255,255,0.04),transparent_50%),var(--panel)]">
+      <Card>
         <CardHeader>
           <CardTitle>Usage & Trade-offs</CardTitle>
           <p className="text-sm text-zinc-400">All fields support markdown. Use concise bullets and concrete situations.</p>
@@ -111,7 +111,7 @@ export function EntryForm({
         {cancelHref ? (
           <Link
             href={cancelHref}
-            className="inline-flex h-11 items-center justify-center rounded-xl border border-white/15 bg-white/10 px-6 text-sm font-semibold text-zinc-100 backdrop-blur-xl transition-colors hover:bg-white/20"
+            className="inline-flex h-11 items-center justify-center rounded-md border border-white/20 px-6 text-sm font-medium text-zinc-200 transition-colors hover:bg-white/10"
           >
             Cancel
           </Link>

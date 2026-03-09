@@ -3,13 +3,13 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  --background: #070a11;
-  --foreground: #f8fafc;
-  --muted-foreground: #c7d1de;
-  --panel: rgba(17, 25, 40, 0.6);
-  --panel-strong: rgba(17, 25, 40, 0.78);
-  --ring: rgba(56, 189, 248, 0.5);
-  --shadow-color: 56, 189, 248;
+  --background: #0b0d10;
+  --foreground: #f3f4f6;
+  --muted-foreground: #a1a1aa;
+  --panel: rgba(24, 24, 27, 0.7);
+  --panel-strong: rgba(24, 24, 27, 0.9);
+  --ring: rgba(161, 161, 170, 0.45);
+  --shadow-color: 0, 0, 0;
 }
 
 @theme inline {
@@ -39,56 +39,32 @@ body {
 .app-bg {
   background-color: var(--background);
   background-image:
-    radial-gradient(circle at 12% 20%, rgba(14, 165, 233, 0.22), transparent 35%),
-    radial-gradient(circle at 88% 15%, rgba(56, 189, 248, 0.17), transparent 30%),
-    radial-gradient(circle at 70% 80%, rgba(217, 70, 239, 0.18), transparent 35%),
-    linear-gradient(180deg, rgba(5, 9, 18, 0.4), transparent 40%);
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 28px 28px;
   background-attachment: fixed;
 }
 
 .hero-glow {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
+  background: var(--panel);
 }
 
 .hero-glow::after {
-  content: "";
-  position: absolute;
-  inset: -120%;
-  background: conic-gradient(from 20deg, rgba(14, 165, 233, 0.18), transparent, rgba(249, 115, 22, 0.16), transparent, rgba(14, 165, 233, 0.18));
-  animation: spin 18s linear infinite;
-  z-index: -1;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
+  content: none;
 }
 
 .float-card {
-  animation: float 7s ease-in-out infinite;
+  animation: none;
 }
 
 .glass {
   background: var(--panel);
-  backdrop-filter: blur(18px) saturate(130%);
+  backdrop-filter: blur(8px);
 }
 
 .glass-strong {
   background: var(--panel-strong);
-  backdrop-filter: blur(20px) saturate(135%);
+  backdrop-filter: blur(10px);
 }
 
 .ring-focus {
@@ -101,8 +77,8 @@ body {
 
 .soft-shadow {
   box-shadow:
-    0 14px 44px rgba(var(--shadow-color), 0.16),
-    0 2px 12px rgba(2, 6, 23, 0.5);
+    0 8px 24px rgba(var(--shadow-color), 0.35),
+    0 1px 2px rgba(var(--shadow-color), 0.3);
 }
 
 .prose :where(code):not(:where(pre code)) {
@@ -112,7 +88,7 @@ body {
 }
 
 .prose pre {
-  box-shadow: 0 14px 34px rgba(2, 8, 24, 0.42);
+  box-shadow: none;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -125,11 +101,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-glow::after,
-  .float-card {
-    animation: none !important;
-  }
-
   * {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
