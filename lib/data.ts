@@ -187,7 +187,7 @@ export async function getEntriesCount() {
   const supabase = createSupabaseServerClient();
   const { count, error } = await supabase
     .from("entries")
-    .select("id", { count: "exact", head: true });
+    .select("id", { count: "planned", head: true });
   if (error) throw new Error(error.message);
   return count ?? 0;
 }

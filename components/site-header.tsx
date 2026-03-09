@@ -19,7 +19,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-2 lg:flex">
+        <nav className="no-scrollbar hidden max-w-[68vw] items-center gap-2 overflow-x-auto lg:flex">
           {CATEGORY_SLUGS.map((slug) => {
             const href = `/${slug}`;
             const active = pathname === href;
@@ -29,7 +29,7 @@ export function SiteHeader() {
               key={slug}
               href={href}
               aria-current={active ? "page" : undefined}
-              className={`rounded-lg px-3 py-2 text-sm transition-colors ${
+              className={`shrink-0 rounded-lg px-3 py-2 text-sm transition-colors ${
                 active
                   ? "bg-cyan-500/15 text-cyan-100"
                   : "text-zinc-300 hover:bg-white/10 hover:text-white"
@@ -42,7 +42,7 @@ export function SiteHeader() {
           <Link
             href="/how-to"
             aria-current={pathname === "/how-to" ? "page" : undefined}
-            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm transition-colors ${
+            className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-sm transition-colors ${
               pathname === "/how-to"
                 ? "bg-cyan-500/15 text-cyan-100"
                 : "text-zinc-300 hover:bg-white/10 hover:text-white"

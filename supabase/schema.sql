@@ -1,5 +1,6 @@
 -- Enable UUID generation
 create extension if not exists "pgcrypto";
+create extension if not exists "pg_trgm";
 
 create table if not exists categories (
   id uuid primary key default gen_random_uuid(),
@@ -27,8 +28,12 @@ drop table if exists entry_tags;
 drop table if exists tags;
 
 create index if not exists idx_entries_category_id on entries (category_id);
+create index if not exists idx_entries_created_at_desc on entries (created_at desc);
+create index if not exists idx_entries_category_created_at_desc on entries (category_id, created_at desc);
 create index if not exists idx_entries_title on entries using gin (to_tsvector('english', title));
 create index if not exists idx_entries_description on entries using gin (to_tsvector('english', description));
+create index if not exists idx_entries_title_trgm on entries using gin (title gin_trgm_ops);
+create index if not exists idx_entries_description_trgm on entries using gin (description gin_trgm_ops);
 create unique index if not exists uq_entries_title_lower on entries ((lower(title)));
 
 alter table if exists categories enable row level security;

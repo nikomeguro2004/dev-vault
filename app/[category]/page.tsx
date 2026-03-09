@@ -77,7 +77,6 @@ export default async function CategoryPage({
               name="q"
               placeholder="Search entries"
               defaultValue={query}
-              autoFocus={!query}
             />
             <Button type="submit">Search</Button>
           </form>
@@ -88,7 +87,7 @@ export default async function CategoryPage({
           {query && (
             <div className="flex flex-wrap gap-2">
               <Link href={`/${category}`}>
-                <Badge className="bg-rose-500/10 text-rose-300">Clear Search</Badge>
+                <Button type="button" variant="secondary" size="sm">Clear Search</Button>
               </Link>
             </div>
           )}
