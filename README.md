@@ -7,7 +7,7 @@ Personal developer knowledge hub for documenting and revisiting engineering know
 ## Features
 
 - **Dashboard home**: hero stats, category browser, recent entries, and quick onboarding card
-- **8 category pages**: `/frameworks`, `/modules`, `/tools`, `/packages`, `/backend-concepts`, `/devops`, `/platforms`, `/effects`
+- **7 category pages**: `/frameworks`, `/tools`, `/packages`, `/backend-concepts`, `/devops`, `/platforms`, `/effects`
 - **Category search**: per-category search across title and description
 - **Entry details**: structured sections (`When to use`, `Pros`, `Cons`) and notes
 - **Create and edit flows**: server actions with strict validation

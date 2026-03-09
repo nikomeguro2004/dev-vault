@@ -80,7 +80,6 @@ create policy entries_delete_public
 insert into categories (name, slug)
 values
   ('Frameworks', 'frameworks'),
-  ('Modules', 'modules'),
   ('Tools', 'tools'),
   ('Packages', 'packages'),
   ('Backend Concepts', 'backend-concepts'),

@@ -1,6 +1,5 @@
 export const CATEGORY_SLUGS = [
   "frameworks",
-  "modules",
   "tools",
   "packages",
   "backend-concepts",
@@ -19,11 +18,6 @@ export const CATEGORY_META: Record<
     title: "Frameworks",
     description: "Architectures, runtimes, and ecosystem references.",
     gradient: "from-cyan-400/70 via-blue-500/60 to-indigo-600/70",
-  },
-  modules: {
-    title: "Modules",
-    description: "Reusable patterns such as auth, caching, and pagination.",
-    gradient: "from-emerald-400/70 via-teal-500/60 to-cyan-600/70",
   },
   tools: {
     title: "Tools",
