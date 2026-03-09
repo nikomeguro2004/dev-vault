@@ -22,10 +22,10 @@ export function EntryForm({
   submitLabel: string;
 }) {
   return (
-    <form action={action} className="space-y-6">
-      <Card>
+    <form action={action} className="space-y-5">
+      <Card className="border-white/15 bg-[linear-gradient(170deg,rgba(255,255,255,0.04),transparent_50%),var(--panel)]">
         <CardHeader>
-          <CardTitle>Core</CardTitle>
+          <CardTitle>Core details</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-1.5 sm:col-span-2">
@@ -72,10 +72,10 @@ export function EntryForm({
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="border-white/15 bg-[linear-gradient(170deg,rgba(255,255,255,0.04),transparent_50%),var(--panel)]">
         <CardHeader>
           <CardTitle>Usage & Trade-offs</CardTitle>
-          <p className="text-sm text-zinc-500">All fields support markdown. Use **bold**, inline code, and bullet lists freely.</p>
+          <p className="text-sm text-zinc-400">All fields support markdown. Use concise bullets and concrete situations.</p>
         </CardHeader>
         <CardContent className="grid gap-5 sm:grid-cols-2">
           <Field
@@ -107,7 +107,7 @@ export function EntryForm({
         </CardContent>
       </Card>
 
-      <div className="flex flex-wrap justify-end gap-2">
+      <div className="flex flex-wrap justify-end gap-2 border-t border-white/10 pt-5">
         {cancelHref ? (
           <Link
             href={cancelHref}
