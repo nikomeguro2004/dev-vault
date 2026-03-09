@@ -6,7 +6,7 @@ import { CopyCodeButton } from "@/components/copy-code-button";
 
 export function MarkdownRenderer({ content }: { content: string }) {
   return (
-    <div className="prose prose-zinc max-w-none dark:prose-invert prose-pre:rounded-xl prose-pre:border prose-pre:border-white/10 prose-pre:bg-zinc-950/80">
+      <div className="prose prose-zinc prose-invert max-w-none prose-pre:rounded-xl prose-pre:border prose-pre:border-white/10 prose-pre:bg-zinc-950/80">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeHighlight]}

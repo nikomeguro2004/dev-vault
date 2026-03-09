@@ -1,6 +1,22 @@
 import { CATEGORY_SLUGS, type CategorySlug } from "@/lib/constants";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import type { Category, EntryInput, EntryWithRelations, Tag } from "@/lib/types";
+import type { Category, EntryInput, EntryListItem, EntryWithRelations, Tag } from "@/lib/types";
+
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * Escape characters that break PostgREST filter string syntax (`,`, `(`, `)`)
+ * and LIKE wildcards (`%`, `_`) so user search input is treated as a literal string.
+ */
+function sanitizeForLike(value: string): string {
+  return value
+    .trim()
+    .slice(0, 200)
+    .replace(/%/g, "\\%")
+    .replace(/_/g, "\\_")
+    .replace(/[(),]/g, "");
+}
 
 type RawTag = {
   id: string;
@@ -9,6 +25,19 @@ type RawTag = {
 
 type RawEntryTag = {
   tag: RawTag | null;
+};
+
+type RawCategoryShape = { id: string; name: string; slug: string };
+
+/** Minimal raw shape returned by list queries (no heavy text fields). */
+type RawEntryListItem = {
+  id: string;
+  title: string;
+  description: string;
+  category_id: string;
+  created_at: string;
+  category: RawCategoryShape | RawCategoryShape[] | null;
+  entry_tags?: RawEntryTag[];
 };
 
 type RawEntry = {
@@ -78,6 +107,27 @@ function normalizeEntry(entry: RawEntry): EntryWithRelations {
   };
 }
 
+function normalizeEntryListItem(entry: RawEntryListItem): EntryListItem {
+  const normalizedCategory = Array.isArray(entry.category)
+    ? (entry.category[0] ?? null)
+    : entry.category;
+
+  const tags: Tag[] = (entry.entry_tags ?? [])
+    .map((item) => item.tag)
+    .filter(isRawTag)
+    .map((tag) => ({ id: tag.id, name: tag.name }));
+
+  return {
+    id: entry.id,
+    title: entry.title,
+    description: entry.description,
+    category_id: entry.category_id,
+    created_at: entry.created_at,
+    category: normalizedCategory,
+    tags,
+  };
+}
+
 export async function getCategories() {
   const supabase = createSupabaseServerClient();
   const { data, error } = await supabase
@@ -112,12 +162,13 @@ export async function getEntries(params?: {
   search?: string;
   tag?: string;
   limit?: number;
-}) {
+}): Promise<EntryListItem[]> {
   const supabase = createSupabaseServerClient();
+  // Lean select — omits heavy text fields not needed by list/card views
   let query = supabase
     .from("entries")
     .select(
-      "id,title,description,category_id,what_it_is,how_it_works,when_to_use,pros,cons,example_code,notes,created_at,category:categories(id,name,slug),entry_tags(tag:tags(id,name))",
+      "id,title,description,category_id,created_at,category:categories(id,name,slug),entry_tags(tag:tags(id,name))",
     )
     .order("created_at", { ascending: false });
 
@@ -134,8 +185,9 @@ export async function getEntries(params?: {
   }
 
   if (params?.search) {
+    const safe = sanitizeForLike(params.search);
     query = query.or(
-      `title.ilike.%${params.search}%,description.ilike.%${params.search}%`,
+      `title.ilike.%${safe}%,description.ilike.%${safe}%`,
     );
   }
 
@@ -144,13 +196,12 @@ export async function getEntries(params?: {
     throw new Error(error.message);
   }
 
-  let entries = ((data ?? []) as unknown as RawEntry[]).map(normalizeEntry);
+  let entries = ((data ?? []) as unknown as RawEntryListItem[]).map(normalizeEntryListItem);
 
   if (params?.tag) {
+    const tagLower = params.tag.toLowerCase();
     entries = entries.filter((entry) =>
-      entry.tags.some((tag) =>
-        tag.name.toLowerCase().includes(params.tag!.toLowerCase()),
-      ),
+      entry.tags.some((tag) => tag.name.toLowerCase().includes(tagLower)),
     );
   }
 
@@ -158,6 +209,7 @@ export async function getEntries(params?: {
 }
 
 export async function getEntryById(id: string) {
+  if (!UUID_RE.test(id)) return null;
   const supabase = createSupabaseServerClient();
   const { data, error } = await supabase
     .from("entries")
@@ -184,13 +236,19 @@ export async function getEntriesCount() {
 }
 
 export async function getPopularTags(limit = 12) {
-  const entries = await getEntries({ limit: 200 });
-  const tagCount = new Map<string, number>();
+  // Query only the junction table + tag names — avoids fetching full entry rows
+  const supabase = createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("entry_tags")
+    .select("tag:tags(name)");
 
-  for (const entry of entries) {
-    for (const tag of entry.tags) {
-      tagCount.set(tag.name, (tagCount.get(tag.name) ?? 0) + 1);
-    }
+  if (error) throw new Error(error.message);
+
+  const tagCount = new Map<string, number>();
+  for (const row of data ?? []) {
+    const tagObj = row.tag as unknown as { name: string } | { name: string }[] | null;
+    const name = Array.isArray(tagObj) ? tagObj[0]?.name : tagObj?.name;
+    if (name) tagCount.set(name, (tagCount.get(name) ?? 0) + 1);
   }
 
   return [...tagCount.entries()]
@@ -290,38 +348,20 @@ async function syncTagsForEntry(entryId: string, tags: string[]) {
     return;
   }
 
-  const tagIds: string[] = [];
+  // Batch upsert all tags at once (replaces N sequential SELECT/INSERT queries)
+  const { data: upsertedTags, error: upsertError } = await supabase
+    .from("tags")
+    .upsert(
+      cleanedTags.map((name) => ({ name })),
+      { onConflict: "name" },
+    )
+    .select("id, name");
 
-  for (const name of cleanedTags) {
-    const { data: existing, error: findError } = await supabase
-      .from("tags")
-      .select("id")
-      .eq("name", name)
-      .maybeSingle();
-
-    if (findError) {
-      throw new Error(findError.message);
-    }
-
-    if (existing?.id) {
-      tagIds.push(existing.id);
-      continue;
-    }
-
-    const { data: created, error: insertError } = await supabase
-      .from("tags")
-      .insert({ name })
-      .select("id")
-      .single();
-
-    if (insertError) {
-      throw new Error(insertError.message);
-    }
-
-    tagIds.push(created.id);
+  if (upsertError) {
+    throw new Error(upsertError.message);
   }
 
-  const payload = tagIds.map((tagId) => ({ entry_id: entryId, tag_id: tagId }));
+  const payload = (upsertedTags ?? []).map((tag) => ({ entry_id: entryId, tag_id: tag.id }));
   const { error: relationError } = await supabase.from("entry_tags").insert(payload);
   if (relationError) {
     throw new Error(relationError.message);

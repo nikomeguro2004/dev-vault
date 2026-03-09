@@ -96,7 +96,7 @@ export default async function Home() {
           <div className="flex items-baseline justify-between">
             <h2 className="text-xl font-semibold text-white">Recent Entries</h2>
             {recentEntries.length > 0 && (
-              <Link href="/frameworks" className="text-sm text-cyan-400 transition-colors hover:text-cyan-300">
+              <Link href={`/${recentEntries[0].category?.slug ?? "frameworks"}`} className="text-sm text-cyan-400 transition-colors hover:text-cyan-300">
                 View all →
               </Link>
             )}
@@ -126,7 +126,7 @@ export default async function Home() {
                   {popularTags.map((tag) => (
                     <Badge key={tag.name} className="cursor-default">
                       #{tag.name}
-                      <span className="ml-1.5 text-cyan-600 dark:text-cyan-400/70">{tag.count}</span>
+                      <span className="ml-1.5 text-cyan-400/70">{tag.count}</span>
                     </Badge>
                   ))}
                 </div>

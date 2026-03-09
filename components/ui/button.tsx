@@ -11,8 +11,8 @@ const buttonVariants = cva(
         default:
           "bg-gradient-to-r from-sky-500 to-cyan-500 text-white shadow-lg shadow-sky-500/20 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-sky-500/30",
         secondary:
-          "border border-white/20 bg-white/10 text-zinc-900 backdrop-blur-xl hover:bg-white/20 dark:text-zinc-100",
-        ghost: "text-zinc-700 hover:bg-zinc-900/5 dark:text-zinc-200 dark:hover:bg-white/10",
+          "border border-white/20 bg-white/10 text-zinc-100 backdrop-blur-xl hover:bg-white/20",
+        ghost: "text-zinc-200 hover:bg-white/10",
         destructive:
           "bg-gradient-to-r from-rose-500 to-red-500 text-white hover:-translate-y-0.5",
       },

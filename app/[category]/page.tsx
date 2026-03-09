@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
 import { EmptyState } from "@/components/empty-state";
 import { EntryCard } from "@/components/entry-card";
@@ -12,6 +13,20 @@ import { getEntries, isCategorySlug } from "@/lib/data";
 
 export async function generateStaticParams() {
   return CATEGORY_SLUGS.map((category) => ({ category }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}): Promise<Metadata> {
+  const { category } = await params;
+  if (!isCategorySlug(category)) return { title: "Not found" };
+  const meta = CATEGORY_META[category as CategorySlug];
+  return {
+    title: `${meta.title} — Dev Vault`,
+    description: meta.description,
+  };
 }
 
 export default async function CategoryPage({
@@ -32,29 +47,31 @@ export default async function CategoryPage({
   const query = resolvedSearchParams.q?.trim() ?? "";
   const activeTag = resolvedSearchParams.tag?.trim() ?? "";
 
-  const entries = await getEntries({
-    categorySlug: category,
-    search: query,
-    tag: activeTag,
-  });
-
-  const allCategoryEntries = await getEntries({
-    categorySlug: category,
-    limit: 200,
-  });
+  const [entries, tagEntries] = await Promise.all([
+    getEntries({
+      categorySlug: category,
+      search: query,
+      tag: activeTag,
+    }),
+    // Only fetch a separate full-category list when a filter is active;
+    // otherwise derive tags from the already-fetched entries.
+    query || activeTag
+      ? getEntries({ categorySlug: category, limit: 200 })
+      : Promise.resolve(null),
+  ]);
 
   const tags = Array.from(
-    new Set(allCategoryEntries.flatMap((entry) => entry.tags.map((tag) => tag.name))),
+    new Set((tagEntries ?? entries).flatMap((entry) => entry.tags.map((tag) => tag.name))),
   ).slice(0, 20);
 
   return (
     <div className="space-y-8">
-      <section className="rounded-3xl border border-white/20 bg-[var(--panel)] p-6 backdrop-blur-xl sm:p-8">
+      <section className="rounded-3xl border border-white/10 bg-[var(--panel)] p-6 backdrop-blur-xl sm:p-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <Badge>{CATEGORY_META[category].title}</Badge>
             <h1 className="mt-2 text-3xl font-bold tracking-tight">{CATEGORY_META[category].title}</h1>
-            <p className="mt-2 text-zinc-600 dark:text-zinc-300">{CATEGORY_META[category].description}</p>
+            <p className="mt-2 text-zinc-300">{CATEGORY_META[category].description}</p>
           </div>
           <Link href={`/entries/new?category=${category}`}>
             <Button>Add Entry</Button>
@@ -78,7 +95,7 @@ export default async function CategoryPage({
             {activeTag ? <input type="hidden" name="tag" value={activeTag} /> : null}
             <Button type="submit">Search</Button>
           </form>
-          <p className="text-sm text-zinc-600 dark:text-zinc-300">
+          <p className="text-sm text-zinc-300">
             Showing {entries.length} {entries.length === 1 ? "entry" : "entries"}
             {activeTag ? ` for #${activeTag}` : ""}
             {query ? ` matching \"${query}\"` : ""}
@@ -102,7 +119,7 @@ export default async function CategoryPage({
             ))}
             {(activeTag || query) && (
               <Link href={`/${category}`}>
-                <Badge className="bg-rose-500/10 text-rose-700 dark:text-rose-300">Clear Filters</Badge>
+                <Badge className="bg-rose-500/10 text-rose-300">Clear Filters</Badge>
               </Link>
             )}
           </div>

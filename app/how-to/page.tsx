@@ -109,7 +109,7 @@ export default function HowToPage() {
       </section>
 
       {/* Field guide */}
-      <section id="fields" className="space-y-4">
+      <section id="fields" className="space-y-4 scroll-mt-24">
         <SectionHeader step="02" title="Field guide" />
         <div className="grid gap-4">
           {FIELD_GUIDE.map((field) => (
@@ -142,7 +142,7 @@ export default function HowToPage() {
       </section>
 
       {/* Markdown guide */}
-      <section id="markdown" className="space-y-4">
+      <section id="markdown" className="space-y-4 scroll-mt-24">
         <SectionHeader step="03" title="Markdown syntax" />
         <Card>
           <CardContent className="pt-6">
@@ -170,7 +170,7 @@ export default function HowToPage() {
       </section>
 
       {/* Code examples */}
-      <section id="code" className="space-y-4">
+      <section id="code" className="space-y-4 scroll-mt-24">
         <SectionHeader step="04" title="Code examples" />
         <Card>
           <CardContent className="space-y-4 pt-6">
@@ -211,7 +211,7 @@ const client = createClient({ url: '...' })
       </section>
 
       {/* Tags & Categories */}
-      <section id="tags" className="space-y-4">
+      <section id="tags" className="space-y-4 scroll-mt-24">
         <SectionHeader step="05" title="Tags & categories" />
         <div className="grid gap-4 sm:grid-cols-2">
           <Card>

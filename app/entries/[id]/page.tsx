@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Calendar, ChevronLeft, Pencil, Tag } from "lucide-react";
+import type { Metadata } from "next";
 
 import { deleteEntryAction } from "@/app/actions";
 import { DeleteEntryButton } from "@/components/delete-entry-button";
@@ -9,6 +10,20 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getEntryById } from "@/lib/data";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const entry = await getEntryById(id);
+  if (!entry) return { title: "Entry not found" };
+  return {
+    title: `${entry.title} — Dev Vault`,
+    description: entry.description,
+  };
+}
 
 export default async function EntryPage({
   params,
@@ -100,23 +115,25 @@ export default async function EntryPage({
       </div>
 
       {/* Example Code */}
-      <Card className="overflow-hidden">
-        <CardHeader className="border-b border-white/10 bg-white/5 py-3">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1.5">
-              <span className="h-3 w-3 rounded-full bg-rose-500/70" />
-              <span className="h-3 w-3 rounded-full bg-amber-500/70" />
-              <span className="h-3 w-3 rounded-full bg-emerald-500/70" />
+      {entry.example_code && (
+        <Card className="overflow-hidden">
+          <CardHeader className="border-b border-white/10 bg-white/5 py-3">
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1.5">
+                <span className="h-3 w-3 rounded-full bg-rose-500/70" />
+                <span className="h-3 w-3 rounded-full bg-amber-500/70" />
+                <span className="h-3 w-3 rounded-full bg-emerald-500/70" />
+              </div>
+              <CardTitle className="font-mono text-xs font-normal text-zinc-400">
+                example.ts
+              </CardTitle>
             </div>
-            <CardTitle className="font-mono text-xs font-normal text-zinc-400">
-              example.ts
-            </CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent className="p-0">
-          <MarkdownRenderer content={"```ts\n" + entry.example_code + "\n```"} />
-        </CardContent>
-      </Card>
+          </CardHeader>
+          <CardContent className="p-0">
+            <MarkdownRenderer content={"```ts\n" + entry.example_code + "\n```"} />
+          </CardContent>
+        </Card>
+      )}
 
       {/* Notes */}
       {entry.notes && (

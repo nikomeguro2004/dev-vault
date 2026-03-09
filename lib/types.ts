@@ -34,6 +34,21 @@ export type EntryWithRelations = Entry & {
   tags: Tag[];
 };
 
+/**
+ * Lightweight entry type used in list/card views.
+ * Does not include heavy text fields (what_it_is, how_it_works, etc.)
+ * which are only needed on the detail page.
+ */
+export type EntryListItem = {
+  id: string;
+  title: string;
+  description: string;
+  category_id: string;
+  created_at: string;
+  category?: { id: string; name: string; slug: string } | null;
+  tags: Tag[];
+};
+
 export type EntryInput = {
   title: string;
   description: string;

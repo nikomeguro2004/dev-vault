@@ -3,7 +3,7 @@ import { BookOpen } from "lucide-react";
 
 import { createEntryAction } from "@/app/actions";
 import { EntryForm } from "@/components/entry-form";
-import { CATEGORY_SLUGS } from "@/lib/constants";
+import { CATEGORY_META, CATEGORY_SLUGS } from "@/lib/constants";
 
 export default async function NewEntryPage({
   searchParams,
@@ -26,8 +26,8 @@ export default async function NewEntryPage({
         <span>/</span>
         {initialCategory && (
           <>
-            <Link href={`/${initialCategory}`} className="capitalize transition-colors hover:text-zinc-300">
-              {initialCategory}
+            <Link href={`/${initialCategory}`} className="transition-colors hover:text-zinc-300">
+              {CATEGORY_META[initialCategory as keyof typeof CATEGORY_META]?.title ?? initialCategory}
             </Link>
             <span>/</span>
           </>

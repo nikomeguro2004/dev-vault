@@ -34,6 +34,7 @@ export function EntryForm({
               id="title"
               name="title"
               required
+              maxLength={300}
               placeholder="e.g. React Server Components, Redis Caching, Playwright Setup"
               defaultValue={defaultValue?.title}
             />
@@ -73,6 +74,7 @@ export function EntryForm({
             <Input
               id="tags"
               name="tags"
+              maxLength={500}
               placeholder="react, ssr, auth, caching"
               defaultValue={defaultValue?.tags.map((tag) => tag.name).join(", ")}
             />
@@ -127,6 +129,7 @@ export function EntryForm({
           <Field
             name="notes"
             label="Notes"
+            required={false}
             placeholder="Additional context, gotchas, links, or anything worth remembering. Markdown is supported."
             defaultValue={defaultValue?.notes}
           />
@@ -137,7 +140,7 @@ export function EntryForm({
         {cancelHref ? (
           <Link
             href={cancelHref}
-            className="inline-flex h-11 items-center justify-center rounded-xl border border-white/20 bg-white/10 px-6 text-sm font-semibold text-zinc-900 backdrop-blur-xl transition-colors hover:bg-white/20 dark:border-white/15 dark:text-zinc-100"
+            className="inline-flex h-11 items-center justify-center rounded-xl border border-white/15 bg-white/10 px-6 text-sm font-semibold text-zinc-100 backdrop-blur-xl transition-colors hover:bg-white/20"
           >
             Cancel
           </Link>
@@ -154,20 +157,24 @@ function Field({
   placeholder,
   defaultValue,
   className,
+  required = true,
 }: {
   name: string;
   label: string;
   placeholder?: string;
   defaultValue?: string;
   className?: string;
+  required?: boolean;
 }) {
   return (
     <div className={`space-y-1.5 ${className ?? ""}`}>
-      <label htmlFor={name} className="text-sm font-medium text-zinc-200">{label} <span className="text-rose-400">*</span></label>
+      <label htmlFor={name} className="text-sm font-medium text-zinc-200">
+        {label}{required && <span className="ml-0.5 text-rose-400">*</span>}
+      </label>
       <Textarea
         id={name}
         name={name}
-        required
+        required={required}
         rows={4}
         placeholder={placeholder}
         defaultValue={defaultValue}
