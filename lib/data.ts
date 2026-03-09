@@ -265,6 +265,8 @@ export async function createEntry(input: EntryInput) {
     throw new Error("Category not found.");
   }
 
+  await assertNoDuplicateTitle(input.title);
+
   const { data: entry, error: entryError } = await supabase
     .from("entries")
     .insert({
@@ -283,6 +285,9 @@ export async function createEntry(input: EntryInput) {
     .single();
 
   if (entryError) {
+    if (entryError.code === "23505") {
+      throw new Error("An entry with this title already exists.");
+    }
     throw new Error(entryError.message);
   }
 
@@ -297,6 +302,8 @@ export async function updateEntry(id: string, input: EntryInput) {
   if (!category) {
     throw new Error("Category not found.");
   }
+
+  await assertNoDuplicateTitle(input.title, id);
 
   const { error } = await supabase
     .from("entries")
@@ -315,17 +322,40 @@ export async function updateEntry(id: string, input: EntryInput) {
     .eq("id", id);
 
   if (error) {
+    if (error.code === "23505") {
+      throw new Error("An entry with this title already exists.");
+    }
     throw new Error(error.message);
   }
 
   await syncTagsForEntry(id, input.tags);
 }
 
-export async function deleteEntry(id: string) {
+export async function deleteEntry(_id: string) {
+  throw new Error("Deleting entries is disabled.");
+}
+
+async function assertNoDuplicateTitle(title: string, excludeId?: string) {
+  const normalizedTitle = title.trim();
+  if (!normalizedTitle) return;
+
   const supabase = createSupabaseServerClient();
-  const { error } = await supabase.from("entries").delete().eq("id", id);
+  let query = supabase
+    .from("entries")
+    .select("id", { count: "exact", head: true })
+    .ilike("title", normalizedTitle);
+
+  if (excludeId) {
+    query = query.neq("id", excludeId);
+  }
+
+  const { count, error } = await query;
   if (error) {
     throw new Error(error.message);
+  }
+
+  if ((count ?? 0) > 0) {
+    throw new Error("An entry with this title already exists.");
   }
 }
 

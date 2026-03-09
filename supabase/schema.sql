@@ -37,6 +37,7 @@ create table if not exists entry_tags (
 create index if not exists idx_entries_category_id on entries (category_id);
 create index if not exists idx_entries_title on entries using gin (to_tsvector('english', title));
 create index if not exists idx_entries_description on entries using gin (to_tsvector('english', description));
+create unique index if not exists uq_entries_title_lower on entries ((lower(title)));
 create index if not exists idx_tags_name on tags (name);
 create index if not exists idx_entry_tags_tag_id on entry_tags(tag_id);
 

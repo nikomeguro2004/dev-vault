@@ -3,8 +3,6 @@ import { notFound } from "next/navigation";
 import { Calendar, ChevronLeft, Pencil, Tag } from "lucide-react";
 import type { Metadata } from "next";
 
-import { deleteEntryAction } from "@/app/actions";
-import { DeleteEntryButton } from "@/components/delete-entry-button";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -87,9 +85,6 @@ export default async function EntryPage({
               Edit Entry
             </Button>
           </Link>
-          <form action={deleteEntryAction.bind(null, entry.id, entry.category?.slug)}>
-            <DeleteEntryButton title={entry.title} />
-          </form>
           <Link href={entry.category?.slug ? `/${entry.category.slug}` : "/"} className="ml-auto">
             <Button variant="ghost">
               <ChevronLeft className="mr-1 h-4 w-4" />

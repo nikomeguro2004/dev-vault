@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { CATEGORY_SLUGS, type CategorySlug } from "@/lib/constants";
-import { createEntry, deleteEntry, updateEntry } from "@/lib/data";
+import { createEntry, updateEntry } from "@/lib/data";
 
 const MAX_LEN = {
   title: 300,
@@ -83,13 +83,7 @@ export async function updateEntryAction(id: string, formData: FormData) {
 }
 
 export async function deleteEntryAction(id: string, categorySlug?: string) {
-  await deleteEntry(id);
-  revalidatePath("/");
-
-  if (categorySlug && CATEGORY_SLUGS.includes(categorySlug as CategorySlug)) {
-    revalidatePath(`/${categorySlug}`);
-    redirect(`/${categorySlug}`);
-  }
-
-  redirect("/");
+  void id;
+  void categorySlug;
+  throw new Error("Deleting entries is disabled.");
 }
