@@ -1,21 +1,21 @@
 # Dev Vault
 
-Personal developer knowledge hub — a structured reference vault for frameworks, modules, tools, and UI effects. Built with Next.js App Router, Supabase, and Tailwind CSS v4.
+Personal developer knowledge hub for documenting and revisiting engineering knowledge in one place. Built with Next.js App Router, Supabase, and Tailwind CSS v4.
 
 ---
 
 ## Features
 
-- **Dashboard home** — hero with live stats (entry count and category count), category grid with gradient cards, recent entries, and a first-time guide nudge
-- **7 category pages** — `/frameworks`, `/modules`, `/tools`, `/backend-concepts`, `/devops`, `/platforms`, `/effects` — each with search and entry grid
-- **Entry detail pages** — breadcrumb nav, colour-coded knowledge sections (What it is, How it works, When to use, Pros/Cons), syntax-highlighted code block with copy button, and notes
-- **Create / Edit** — write and update entries via Next.js Server Actions with server-side validation
-- **How To page** — step-by-step guide, field reference, markdown cheatsheet, code formatting tips, categories reference
-- **Search** — per-category full-text search (ILIKE across title + description)
-- **Forced dark mode** — no light mode, no toggle, no flash
-- **Security** — PostgREST injection prevention, UUID validation, server-side length/whitelist validation, HTTP security headers
-- **Performance** — lean DB selects (list views omit heavy text fields), parallel data fetching, `display: swap` fonts
-- **Per-page dynamic metadata** — browser tab titles and descriptions for every route
+- **Dashboard home**: hero stats, category browser, recent entries, and quick onboarding card
+- **7 category pages**: `/frameworks`, `/modules`, `/tools`, `/backend-concepts`, `/devops`, `/platforms`, `/effects`
+- **Category search**: per-category search across title and description
+- **Entry details**: structured sections (`What it is`, `How it works`, `When to use`, `Pros`, `Cons`), code sample, and notes
+- **Create and edit flows**: server actions with strict validation
+- **No delete flow**: deletion is disabled at UI and server layers
+- **How-To guide**: formatting and writing conventions for high-quality entries
+- **Sticky header + footer**: category navigation plus contact footer (`adihere2000@gmail.com`)
+- **Dynamic metadata**: page titles/descriptions generated per route
+- **Dark UI system**: forced dark theme with custom gradients and glassmorphism styling
 
 ---
 
@@ -39,7 +39,7 @@ Personal developer knowledge hub — a structured reference vault for frameworks
 ```
 app/
   page.tsx                  # Dashboard home (hero, categories, recent entries)
-  layout.tsx                # Root layout (fonts, ThemeProvider, SiteHeader, skip nav)
+  layout.tsx                # Root layout (fonts, ThemeProvider, SiteHeader, SiteFooter)
   globals.css               # CSS variables, Tailwind base styles
   actions.ts                # Server Actions: createEntry, updateEntry
   [category]/
@@ -71,7 +71,7 @@ components/
     select.tsx              # Native select
 
 lib/
-  data.ts                   # All Supabase queries and mutations
+  data.ts                   # Supabase queries and mutations
   types.ts                  # TypeScript types (Entry, EntryListItem, EntryWithRelations, etc.)
   constants.ts              # CATEGORY_SLUGS, CATEGORY_META (titles, descriptions, gradients)
   supabase/
@@ -79,7 +79,7 @@ lib/
   utils.ts                  # cn() helper (clsx + tailwind-merge)
 
 supabase/
-  schema.sql                # Tables (categories, entries) + indexes
+  schema.sql                # Tables (categories, entries), policies, and performance indexes
 ```
 
 ---
@@ -103,7 +103,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 In the Supabase SQL Editor, run `supabase/schema.sql` to create all tables and indexes.
 
-> **Note:** The app uses the anon key with no Row Level Security enforced. Suitable for a private/personal vault. Do not expose this instance publicly without adding RLS policies.
+The provided schema enables RLS and creates permissive public policies (`anon`/`authenticated`) for personal usage.
+For production, restrict policies and add authentication.
 
 ### 3. Run
 
@@ -130,7 +131,14 @@ entries        id, title, description, category_id (FK), what_it_is, how_it_work
                when_to_use, pros, cons, example_code, notes, created_at
 ```
 
-Indexes on `entries.category_id`, `entries.title` (GIN full-text), and `entries.description` (GIN full-text).
+Key indexes include:
+
+- `entries(category_id)`
+- `entries(created_at desc)`
+- `entries(category_id, created_at desc)`
+- full-text GIN indexes on `entries.title` and `entries.description`
+- trigram GIN indexes on `entries.title` and `entries.description` for `ILIKE` search
+- case-insensitive unique index on `lower(entries.title)`
 
 ---
 
@@ -143,4 +151,12 @@ Indexes on `entries.category_id`, `entries.title` (GIN full-text), and `entries.
 - `/entries/[id]` (Dynamic): Entry detail
 - `/entries/[id]/edit` (Dynamic): Edit entry
 
-- For production, add Row Level Security policies and auth.
+## Data Notes
+
+- Category set is fixed in code (`lib/constants.ts`).
+- Entries cannot be deleted from the app.
+- Duplicate entry titles are blocked via a DB-level case-insensitive unique index.
+
+## Contact
+
+- Footer email: `adihere2000@gmail.com`
