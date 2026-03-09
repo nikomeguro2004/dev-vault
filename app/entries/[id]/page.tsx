@@ -68,7 +68,7 @@ export default async function EntryPage({
             </span>
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{entry.title}</h1>
-          <p className="max-w-3xl text-lg leading-relaxed text-zinc-300">{entry.description}</p>
+          <p className="max-w-3xl text-sm leading-relaxed text-zinc-400">Category note and decision reference</p>
         </div>
         <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-white/10 pt-6">
           <Link href={`/entries/${entry.id}/edit`}>
@@ -86,41 +86,23 @@ export default async function EntryPage({
         </div>
       </header>
 
-      {/* What it is + How it works */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <InfoCard title="What it is" content={entry.what_it_is} accent="cyan" />
-        <InfoCard title="How it works" content={entry.how_it_works} accent="sky" />
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <MarkdownRenderer content={entry.description} />
+        </CardContent>
+      </Card>
 
       {/* When to use */}
-      <InfoCard title="When to use it" content={entry.when_to_use} accent="indigo" />
+      <InfoCard title="When to use it" content={entry.when_to_use} accent="cyan" />
 
       {/* Pros & Cons */}
       <div className="grid gap-4 md:grid-cols-2">
         <ProsConsCard title="Pros" content={entry.pros} type="pros" />
         <ProsConsCard title="Cons" content={entry.cons} type="cons" />
       </div>
-
-      {/* Example Code */}
-      {entry.example_code && (
-        <Card className="overflow-hidden">
-          <CardHeader className="border-b border-white/10 bg-white/5 py-3">
-            <div className="flex items-center gap-2">
-              <div className="flex gap-1.5">
-                <span className="h-3 w-3 rounded-full bg-rose-500/70" />
-                <span className="h-3 w-3 rounded-full bg-amber-500/70" />
-                <span className="h-3 w-3 rounded-full bg-emerald-500/70" />
-              </div>
-              <CardTitle className="font-mono text-xs font-normal text-zinc-400">
-                example.ts
-              </CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="p-0">
-            <MarkdownRenderer content={"```ts\n" + entry.example_code + "\n```"} />
-          </CardContent>
-        </Card>
-      )}
 
       {/* Notes */}
       {entry.notes && (
@@ -139,8 +121,6 @@ export default async function EntryPage({
 
 const accentClasses = {
   cyan: "border-l-cyan-500",
-  sky: "border-l-sky-500",
-  indigo: "border-l-indigo-500",
 } as const;
 
 function InfoCard({

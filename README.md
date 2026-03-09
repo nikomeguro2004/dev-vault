@@ -9,7 +9,7 @@ Personal developer knowledge hub for documenting and revisiting engineering know
 - **Dashboard home**: hero stats, category browser, recent entries, and quick onboarding card
 - **7 category pages**: `/frameworks`, `/modules`, `/tools`, `/backend-concepts`, `/devops`, `/platforms`, `/effects`
 - **Category search**: per-category search across title and description
-- **Entry details**: structured sections (`What it is`, `How it works`, `When to use`, `Pros`, `Cons`), code sample, and notes
+- **Entry details**: structured sections (`When to use`, `Pros`, `Cons`) and notes
 - **Create and edit flows**: server actions with strict validation
 - **No delete flow**: deletion is disabled at UI and server layers
 - **How-To guide**: formatting and writing conventions for high-quality entries
@@ -55,7 +55,7 @@ components/
   site-header.tsx           # Sticky header with category nav + guide link
   site-footer.tsx           # Footer with contact link
   entry-card.tsx            # Card used in list/grid views (lean EntryListItem type)
-  entry-form.tsx            # Shared create/edit form with CodeField + Field components
+  entry-form.tsx            # Shared create/edit form
   empty-state.tsx           # Dashed-border empty state card
   form-submit-button.tsx    # useFormStatus-aware submit button
   markdown-renderer.tsx     # prose-invert ReactMarkdown with copy-code button
@@ -127,8 +127,8 @@ npm run start
 
 ```
 categories     id, name, slug, created_at
-entries        id, title, description, category_id (FK), what_it_is, how_it_works,
-               when_to_use, pros, cons, example_code, notes, created_at
+entries        id, title, description, category_id (FK), when_to_use, pros,
+               cons, notes, created_at
 ```
 
 Key indexes include:

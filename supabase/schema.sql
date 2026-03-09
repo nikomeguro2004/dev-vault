@@ -14,12 +14,9 @@ create table if not exists entries (
   title text not null,
   description text not null,
   category_id uuid not null references categories(id) on delete cascade,
-  what_it_is text not null,
-  how_it_works text not null,
   when_to_use text not null,
   pros text not null,
   cons text not null,
-  example_code text not null,
   notes text not null,
   created_at timestamp with time zone not null default now()
 );
@@ -100,24 +97,18 @@ insert into entries (
   title,
   description,
   category_id,
-  what_it_is,
-  how_it_works,
   when_to_use,
   pros,
   cons,
-  example_code,
   notes
 )
 select
   'Next.js',
   'React framework for SSR, SSG, and app routing.',
   c.id,
-  'A production framework for building React applications with rendering strategies and routing baked in.',
-  'It compiles and optimizes bundles, supports server components, and can execute code on server or edge.',
   'Use when you need SEO, full-stack capabilities, and performance-oriented defaults.',
   '- Great DX\n- Strong ecosystem\n- Flexible rendering options',
   '- Can feel complex for small projects\n- Frequent framework evolution',
-  'export default function Page() {\n  return <h1>Hello Next.js</h1>;\n}',
   'Great default for product teams that want frontend and backend in one repo.'
 from categories c
 where c.slug = 'frameworks'
@@ -129,24 +120,18 @@ insert into entries (
   title,
   description,
   category_id,
-  what_it_is,
-  how_it_works,
   when_to_use,
   pros,
   cons,
-  example_code,
   notes
 )
 select
   'Docker',
   'Container platform for reproducible development and deployment.',
   c.id,
-  'A containerization engine that packages your application and dependencies into portable images.',
-  'Containers share the host kernel while isolating process spaces, network, and filesystem layers.',
   'Use for local parity with production, CI pipelines, and service orchestration.',
   '- Consistent environments\n- Easy deployment packaging\n- Broad ecosystem',
   '- Learning curve\n- Extra runtime overhead',
-  'FROM node:20-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci\nCOPY . .\nCMD ["npm", "run", "start"]',
   'Pair with docker compose for multi-service local environments.'
 from categories c
 where c.slug = 'tools'

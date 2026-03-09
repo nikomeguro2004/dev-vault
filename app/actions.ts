@@ -17,12 +17,9 @@ function parsePayload(formData: FormData) {
     title: String(formData.get("title") ?? "").trim(),
     description: String(formData.get("description") ?? "").trim(),
     categorySlug: String(formData.get("category") ?? ""),
-    what_it_is: String(formData.get("what_it_is") ?? "").trim(),
-    how_it_works: String(formData.get("how_it_works") ?? "").trim(),
     when_to_use: String(formData.get("when_to_use") ?? "").trim(),
     pros: String(formData.get("pros") ?? "").trim(),
     cons: String(formData.get("cons") ?? "").trim(),
-    example_code: String(formData.get("example_code") ?? "").trim(),
     notes: String(formData.get("notes") ?? "").trim(),
   };
 }
@@ -36,12 +33,9 @@ function validatePayload(payload: ReturnType<typeof parsePayload>) {
   if (!payload.description) throw new Error("Description is required.");
   if (payload.description.length > MAX_LEN.description) throw new Error("Description is too long.");
   for (const field of [
-    "what_it_is",
-    "how_it_works",
     "when_to_use",
     "pros",
     "cons",
-    "example_code",
     "notes",
   ] as const) {
     if (payload[field].length > MAX_LEN.textField) {

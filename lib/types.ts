@@ -10,12 +10,9 @@ export type Entry = {
   title: string;
   description: string;
   category_id: string;
-  what_it_is: string;
-  how_it_works: string;
   when_to_use: string;
   pros: string;
   cons: string;
-  example_code: string;
   notes: string;
   created_at: string;
 };
@@ -30,7 +27,7 @@ export type EntryWithRelations = Entry & {
 
 /**
  * Lightweight entry type used in list/card views.
- * Does not include heavy text fields (what_it_is, how_it_works, etc.)
+ * Does not include heavy text fields used on detail pages.
  * which are only needed on the detail page.
  */
 export type EntryListItem = {
@@ -46,11 +43,8 @@ export type EntryInput = {
   title: string;
   description: string;
   categorySlug: string;
-  what_it_is: string;
-  how_it_works: string;
   when_to_use: string;
   pros: string;
   cons: string;
-  example_code: string;
   notes: string;
 };

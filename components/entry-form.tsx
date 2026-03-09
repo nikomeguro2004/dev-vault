@@ -74,22 +74,10 @@ export function EntryForm({
 
       <Card>
         <CardHeader>
-          <CardTitle>Knowledge Blocks</CardTitle>
+          <CardTitle>Usage & Trade-offs</CardTitle>
           <p className="text-sm text-zinc-500">All fields support markdown. Use **bold**, inline code, and bullet lists freely.</p>
         </CardHeader>
         <CardContent className="grid gap-5 sm:grid-cols-2">
-          <Field
-            name="what_it_is"
-            label="What it is"
-            placeholder="Define the concept in plain language. Give a one-sentence definition of what it is."
-            defaultValue={defaultValue?.what_it_is}
-          />
-          <Field
-            name="how_it_works"
-            label="How it works"
-            placeholder="Explain the internals, lifecycle, or mechanism. Bullet points work great here."
-            defaultValue={defaultValue?.how_it_works}
-          />
           <Field
             name="when_to_use"
             label="When to use it"
@@ -108,12 +96,6 @@ export function EntryForm({
             label="Cons"
             placeholder="- Tight coupling&#10;- Limited SSR support&#10;- Large bundle size"
             defaultValue={defaultValue?.cons}
-          />
-          <CodeField
-            name="example_code"
-            label="Example code"
-            placeholder={`// Paste your code snippet here — no backticks needed\nconst result = await fetchData()`}
-            defaultValue={defaultValue?.example_code}
           />
           <Field
             name="notes"
@@ -168,34 +150,6 @@ function Field({
         placeholder={placeholder}
         defaultValue={defaultValue}
       />
-    </div>
-  );
-}
-
-function CodeField({
-  name,
-  label,
-  placeholder,
-  defaultValue,
-}: {
-  name: string;
-  label: string;
-  placeholder?: string;
-  defaultValue?: string;
-}) {
-  return (
-    <div className="space-y-1.5 sm:col-span-2">
-      <label htmlFor={name} className="text-sm font-medium text-zinc-200">{label} <span className="text-rose-400">*</span></label>
-      <textarea
-        id={name}
-        name={name}
-        required
-        rows={8}
-        placeholder={placeholder}
-        defaultValue={defaultValue}
-        className="flex w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 font-mono text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-sky-400/70 disabled:opacity-50"
-      />
-      <p className="text-xs text-zinc-500">Raw code only — no backtick fences needed. The display wraps it automatically.</p>
     </div>
   );
 }

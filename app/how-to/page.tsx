@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, ChevronLeft, Code2, LayoutList, Lightbulb, Pencil } from "lucide-react";
+import { ArrowRight, BookOpen, ChevronLeft, LayoutList, Lightbulb, Pencil } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,8 +33,8 @@ export default function HowToPage() {
             How to use the vault
           </h1>
           <p className="max-w-2xl text-lg leading-relaxed text-zinc-300">
-            This guide explains how to create well-structured entries, use markdown
-            formatting, and write useful code examples.
+            This guide shows the current entry template and how to write concise,
+            useful notes you can trust later during real project work.
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
             <Link href="/entries/new">
@@ -59,7 +59,7 @@ export default function HowToPage() {
           {[
             { href: "#fields", icon: <LayoutList className="h-4 w-4" />, label: "Field guide" },
             { href: "#markdown", icon: <BookOpen className="h-4 w-4" />, label: "Markdown syntax" },
-            { href: "#code", icon: <Code2 className="h-4 w-4" />, label: "Code examples" },
+            { href: "#writing", icon: <BookOpen className="h-4 w-4" />, label: "Writing style" },
             { href: "#categories", icon: <LayoutList className="h-4 w-4" />, label: "Categories" },
           ].map(({ href, icon, label }) => (
             <a
@@ -81,15 +81,15 @@ export default function HowToPage() {
         <Card>
           <CardContent className="space-y-4 pt-6">
             <p className="text-zinc-300 leading-relaxed">
-              Every entry in the vault follows a consistent structure with 9 fields. Some are required,
+              Every entry in the vault follows a consistent structure with 6 fields. Some are required,
               some optional — but the more you fill in, the more useful the entry will be later.
             </p>
             <ol className="space-y-3">
               {[
                 { n: 1, label: "Go to dashboard", desc: 'Click "Add Entry" or navigate to a category and click the + button.' },
-                { n: 2, label: "Choose a category", desc: "Pick the most relevant category: Frameworks, Modules, Tools, or Effects." },
+                { n: 2, label: "Choose a category", desc: "Pick the most relevant category: Frameworks, Modules, Tools, Backend Concepts, DevOps, Platforms, or Effects." },
                 { n: 3, label: "Fill in the core fields", desc: "Title, description, and category are the minimum required to save an entry." },
-                { n: 4, label: "Add knowledge blocks", desc: "Write what it is, how it works, when to use it, pros/cons, and a code example." },
+                { n: 4, label: "Add knowledge blocks", desc: "Write when to use it, pros/cons, and any contextual notes for future you." },
                 { n: 5, label: "Save", desc: 'Click "Create Entry". The entry is immediately saved and searchable.' },
               ].map(({ n, label, desc }) => (
                 <li key={n} className="flex gap-3">
@@ -107,9 +107,44 @@ export default function HowToPage() {
         </Card>
       </section>
 
+      {/* Current template */}
+      <section className="space-y-4">
+        <SectionHeader step="02" title="Current Template" />
+        <Card>
+          <CardContent className="space-y-4 pt-6">
+            <p className="text-zinc-300 leading-relaxed">
+              Each entry now uses a simplified model focused on decision quality.
+              Keep entries practical and scannable.
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300">Required</p>
+                <ul className="mt-2 space-y-1 text-sm text-zinc-200">
+                  <li>Title</li>
+                  <li>Description</li>
+                  <li>Category</li>
+                  <li>When to use</li>
+                  <li>Pros</li>
+                  <li>Cons</li>
+                </ul>
+              </div>
+              <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-cyan-300">Optional</p>
+                <ul className="mt-2 space-y-1 text-sm text-zinc-200">
+                  <li>Notes</li>
+                </ul>
+                <p className="mt-3 text-xs text-zinc-400">
+                  Use Notes for links, migration caveats, and team conventions.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
       {/* Field guide */}
       <section id="fields" className="space-y-4 scroll-mt-24">
-        <SectionHeader step="02" title="Field guide" />
+        <SectionHeader step="03" title="Field guide" />
         <div className="grid gap-4">
           {FIELD_GUIDE.map((field) => (
             <Card key={field.name} className="border-l-4 border-l-cyan-500/40">
@@ -142,11 +177,11 @@ export default function HowToPage() {
 
       {/* Markdown guide */}
       <section id="markdown" className="space-y-4 scroll-mt-24">
-        <SectionHeader step="03" title="Markdown syntax" />
+        <SectionHeader step="04" title="Markdown syntax" />
         <Card>
           <CardContent className="pt-6">
             <p className="mb-4 text-sm text-zinc-400">
-              All text fields (What it is, How it works, Pros, Cons, Notes) support GitHub-flavoured markdown.
+              All long-form fields (When to use, Pros, Cons, Notes) support GitHub-flavoured markdown.
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
               {MARKDOWN_CHEATSHEET.map(({ syntax, output, description }) => (
@@ -168,41 +203,42 @@ export default function HowToPage() {
         </Card>
       </section>
 
-      {/* Code examples */}
-      <section id="code" className="space-y-4 scroll-mt-24">
-        <SectionHeader step="04" title="Code examples" />
+      {/* Writing style */}
+      <section id="writing" className="space-y-4 scroll-mt-24">
+        <SectionHeader step="05" title="Writing style" />
         <Card>
           <CardContent className="space-y-4 pt-6">
             <p className="text-sm text-zinc-300 leading-relaxed">
-              The <strong className="text-zinc-100">Example code</strong> field is a plain code textarea — no backtick
-              fences needed. Just paste your raw snippet and the vault wraps it in a syntax-highlighted block automatically.
+              Focus on practical guidance in <strong className="text-zinc-100">When to use</strong>,
+              <strong className="text-zinc-100"> Pros</strong>, and <strong className="text-zinc-100">Cons</strong>.
+              Use concise bullet lists so entries are easy to scan during real project work.
             </p>
 
             <div className="space-y-2">
-              <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">Do this ✓</p>
+              <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">Good pattern ✓</p>
               <pre className="overflow-x-auto rounded-xl bg-zinc-900/70 px-4 py-3 text-xs text-zinc-300">
-                <code>{`const client = createClient({
-  url: process.env.DATABASE_URL,
-  authToken: process.env.DATABASE_TOKEN,
-})`}</code>
+                <code>{`When to use
+- Use for medium-to-large teams that need strong conventions.
+- Avoid for tiny throwaway projects where setup cost is not justified.`}</code>
               </pre>
             </div>
 
             <div className="space-y-2">
-              <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">Not this ✗</p>
+              <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">Avoid this ✗</p>
               <pre className="overflow-x-auto rounded-xl border border-rose-500/20 bg-rose-900/10 px-4 py-3 text-xs text-zinc-400">
-                <code>{`\`\`\`ts
-const client = createClient({ url: '...' })
-\`\`\``}</code>
+                <code>{`When to use
+Sometimes use it.
+
+Pros
+It's good.`}</code>
               </pre>
-              <p className="text-xs text-zinc-500">Backtick fences are added automatically — adding them manually will break the display.</p>
+              <p className="text-xs text-zinc-500">Vague notes age poorly. Be specific about context, constraints, and trade-offs.</p>
             </div>
 
             <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 px-4 py-3">
               <p className="text-sm text-cyan-200">
-                <strong>Note:</strong> Code is always highlighted as TypeScript by default. For other languages,
-                use the Notes field to add your snippet inside triple backticks with a language identifier (e.g.{" "}
-                <code className="rounded bg-zinc-800 px-1 py-0.5 text-xs">```python</code>).
+                <strong>Tip:</strong> Use the Notes field for links, migration caveats, and implementation gotchas that
+                don&apos;t fit the main sections.
               </p>
             </div>
           </CardContent>
@@ -211,7 +247,7 @@ const client = createClient({ url: '...' })
 
       {/* Categories */}
       <section id="categories" className="space-y-4 scroll-mt-24">
-        <SectionHeader step="05" title="Categories" />
+        <SectionHeader step="06" title="Categories" />
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
@@ -245,7 +281,7 @@ const client = createClient({ url: '...' })
 
       {/* Tips */}
       <section className="space-y-4">
-        <SectionHeader step="06" title="Tips for great entries" />
+        <SectionHeader step="07" title="Tips for great entries" />
         <div className="grid gap-3 sm:grid-cols-2">
           {TIPS.map(({ title, description }) => (
             <div
@@ -309,22 +345,6 @@ const FIELD_GUIDE = [
     description: "The primary category bucket. Drives navigation and filtering across the vault.",
   },
   {
-    name: "What it is",
-    required: true,
-    description:
-      "Define the concept. Explain what it is in plain language, as if the reader has never heard of it.",
-    tip: "Focus on the 'what', not the 'how'. Keep it under 5 sentences.",
-    example: "A React Server Component is a component that renders on the server and sends HTML to the client, with no client-side JS bundle.",
-  },
-  {
-    name: "How it works",
-    required: true,
-    description:
-      "Describe the mechanism, lifecycle, or internals. Bullet lists work well here.",
-    tip: "Think of this as the 'mental model' section. Use numbered steps for processes.",
-    example: "1. Component tree renders on the server\n2. React serialises the result\n3. Client receives HTML + RSC payload\n4. Client hydrates interactive nodes only",
-  },
-  {
     name: "When to use it",
     required: true,
     description:
@@ -342,13 +362,6 @@ const FIELD_GUIDE = [
     required: true,
     description: "Key drawbacks, limitations, or gotchas. Be candid.",
     example: "- No access to browser APIs (window, localStorage)\n- Can't use useState or useEffect\n- Requires careful boundary planning",
-  },
-  {
-    name: "Example code",
-    required: true,
-    description:
-      "A focused, runnable snippet. Raw code only — no triple-backtick fences. The vault wraps it in a TypeScript-highlighted block automatically.",
-    tip: "Keep it short and self-contained. One file, one concept. Comments help.",
   },
   {
     name: "Notes",
@@ -384,12 +397,7 @@ const TIPS = [
   {
     title: "Use bullet lists over paragraphs",
     description:
-      "Pros, cons, how-it-works and when-to-use fields are all easier to scan as bullet lists.",
-  },
-  {
-    title: "Keep code examples minimal",
-    description:
-      "A 10-line snippet that captures the core pattern is more useful than a full module copy-paste.",
+      "Pros, cons, and when-to-use fields are easier to scan as bullet lists.",
   },
   {
     title: "Link related entries in Notes",
@@ -399,6 +407,6 @@ const TIPS = [
   {
     title: "Don't wait for perfection",
     description:
-      "Stub entries with just title, description, and a quick code example are already valuable. You can always edit later.",
+      "Stub entries with title, description, and a solid when-to-use section are already valuable. You can always edit later.",
   },
 ];

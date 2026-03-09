@@ -34,12 +34,9 @@ type RawEntry = {
   title: string;
   description: string;
   category_id: string;
-  what_it_is: string;
-  how_it_works: string;
   when_to_use: string;
   pros: string;
   cons: string;
-  example_code: string;
   notes: string;
   created_at: string;
   category:
@@ -73,12 +70,9 @@ function normalizeEntry(entry: RawEntry): EntryWithRelations {
     title: decodeEscapedMultiline(entry.title),
     description: decodeEscapedMultiline(entry.description),
     category_id: entry.category_id,
-    what_it_is: decodeEscapedMultiline(entry.what_it_is),
-    how_it_works: decodeEscapedMultiline(entry.how_it_works),
     when_to_use: decodeEscapedMultiline(entry.when_to_use),
     pros: decodeEscapedMultiline(entry.pros),
     cons: decodeEscapedMultiline(entry.cons),
-    example_code: decodeEscapedMultiline(entry.example_code),
     notes: decodeEscapedMultiline(entry.notes),
     created_at: entry.created_at,
     category: normalizedCategory,
@@ -171,7 +165,7 @@ export async function getEntryById(id: string) {
   const { data, error } = await supabase
     .from("entries")
     .select(
-      "id,title,description,category_id,what_it_is,how_it_works,when_to_use,pros,cons,example_code,notes,created_at,category:categories(id,name,slug)",
+      "id,title,description,category_id,when_to_use,pros,cons,notes,created_at,category:categories(id,name,slug)",
     )
     .eq("id", id)
     .maybeSingle();
@@ -206,12 +200,9 @@ export async function createEntry(input: EntryInput) {
       title: input.title,
       description: input.description,
       category_id: category.id,
-      what_it_is: input.what_it_is,
-      how_it_works: input.how_it_works,
       when_to_use: input.when_to_use,
       pros: input.pros,
       cons: input.cons,
-      example_code: input.example_code,
       notes: input.notes,
     })
     .select("id")
@@ -241,12 +232,9 @@ export async function updateEntry(id: string, input: EntryInput) {
       title: input.title,
       description: input.description,
       category_id: category.id,
-      what_it_is: input.what_it_is,
-      how_it_works: input.how_it_works,
       when_to_use: input.when_to_use,
       pros: input.pros,
       cons: input.cons,
-      example_code: input.example_code,
       notes: input.notes,
     })
     .eq("id", id);
