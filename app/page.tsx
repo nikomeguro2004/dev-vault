@@ -72,7 +72,7 @@ export default async function Home() {
           <h2 className="text-xl font-semibold text-white">Browse Categories</h2>
           <span className="text-sm text-zinc-500">{CATEGORY_SLUGS.length} categories</span>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7">
           {CATEGORY_SLUGS.map((slug) => (
             <Link key={slug} href={`/${slug}`} className="group block">
               <div className="relative h-full overflow-hidden rounded-2xl border border-white/10 bg-(--panel) p-5 backdrop-blur-xl transition-all duration-300 group-hover:-translate-y-1 group-hover:border-white/20 group-hover:shadow-xl group-hover:shadow-cyan-500/10">
