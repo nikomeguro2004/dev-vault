@@ -6,16 +6,20 @@ Personal developer knowledge hub for documenting and revisiting engineering know
 
 ## Features
 
-- **Dashboard home**: hero stats, category browser, recent entries, and quick onboarding card
+- **Redesigned home**: border-beam hero with focused CTA actions and cleaner onboarding layout
+- **Browse Categories section**: card grid with hover-reveal descriptions for quick lane discovery
 - **7 category pages**: `/frameworks`, `/tools`, `/packages`, `/backend-concepts`, `/devops`, `/platforms`, `/effects`
-- **Category search**: per-category search across title and description
+- **Global search in navbar**: animated search toggle that expands a search input and links to `/search?q=...`
+- **Dedicated search page**: `/search` with query, multi-category filters, and sort options
+- **Expanded text search scope**: matches across `title`, `description`, `when_to_use`, `pros`, `cons`, and `notes`
+- **Category search**: per-category filtering using the same expanded field matching
 - **Entry details**: structured sections (`When to use`, `Pros`, `Cons`) and notes
 - **Create and edit flows**: server actions with strict validation
 - **No delete flow**: deletion is disabled at UI and server layers
 - **How-To guide**: formatting and writing conventions for high-quality entries
 - **Sticky header + footer**: category navigation plus contact footer (`adihere2000@gmail.com`)
 - **Dynamic metadata**: page titles/descriptions generated per route
-- **Dark UI system**: forced dark theme with custom gradients and glassmorphism styling
+- **Dark UI system**: dark-first UI with custom gradients, glow accents, and border-beam effects
 
 ---
 
@@ -30,7 +34,7 @@ Personal developer knowledge hub for documenting and revisiting engineering know
 - `lucide-react`
 - Space Grotesk + JetBrains Mono via `next/font`
 - Local shadcn-style UI components
-- `next-themes` with `forcedTheme="dark"`
+- Fixed dark mode layout shell
 
 ---
 
@@ -38,12 +42,14 @@ Personal developer knowledge hub for documenting and revisiting engineering know
 
 ```
 app/
-  page.tsx                  # Dashboard home (hero, categories, recent entries)
-  layout.tsx                # Root layout (fonts, ThemeProvider, SiteHeader, SiteFooter)
+  page.tsx                  # Home (border-beam hero + browse categories)
+  layout.tsx                # Root layout (fonts, SiteHeader, SiteFooter)
   globals.css               # CSS variables, Tailwind base styles
   actions.ts                # Server Actions: createEntry, updateEntry
   [category]/
     page.tsx                # Category listing with search
+  search/
+    page.tsx                # Global search results with sidebar filters + sorting
   entries/
     new/page.tsx            # Create entry form
     [id]/
@@ -52,7 +58,7 @@ app/
   how-to/page.tsx           # Formatting guide (step-by-step, field reference, tips)
 
 components/
-  site-header.tsx           # Sticky header with category nav + guide link
+  site-header.tsx           # Sticky header with category nav + animated search toggle
   site-footer.tsx           # Footer with contact link
   entry-card.tsx            # Card used in list/grid views (lean EntryListItem type)
   entry-form.tsx            # Shared create/edit form
@@ -60,8 +66,6 @@ components/
   form-submit-button.tsx    # useFormStatus-aware submit button
   markdown-renderer.tsx     # prose-invert ReactMarkdown with copy-code button
   copy-code-button.tsx      # Clipboard copy button for code blocks
-  providers/
-    theme-provider.tsx      # next-themes wrapper (forcedTheme="dark")
   ui/
     badge.tsx               # Cyan pill badge
     button.tsx              # cva Button (default, secondary, ghost, destructive)
@@ -145,6 +149,7 @@ Key indexes include:
 ## Routes
 
 - `/` (Static): Dashboard home
+- `/search` (Dynamic): Global search results with filters and sorting
 - `/how-to` (Static): Formatting guide
 - `/[category]` (Dynamic): Category listing (search)
 - `/entries/new` (Dynamic): Create entry

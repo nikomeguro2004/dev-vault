@@ -6,7 +6,7 @@ import { CopyCodeButton } from "@/components/copy-code-button";
 
 export function MarkdownRenderer({ content }: { content: string }) {
   return (
-      <div className="prose prose-zinc prose-invert max-w-none prose-pre:rounded-xl prose-pre:border prose-pre:border-white/10 prose-pre:bg-zinc-950/80">
+  <div className="prose prose-zinc prose-invert max-w-none reveal-up prose-pre:rounded-xl prose-pre:border prose-pre:border-white/10 prose-pre:bg-zinc-950/80">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeHighlight]}
@@ -25,8 +25,8 @@ export function MarkdownRenderer({ content }: { content: string }) {
             }
 
             return (
-              <div className="relative">
-                <div className="absolute right-3 top-3">
+              <div className="relative transition-transform duration-200 ease-out hover:-translate-y-px">
+                <div className="absolute right-3 top-3 reveal-up">
                   <CopyCodeButton code={code} />
                 </div>
                 <pre>{children}</pre>

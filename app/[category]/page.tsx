@@ -1,14 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowLeft, Search } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 import { EmptyState } from "@/components/empty-state";
 import { EntryCard } from "@/components/entry-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { CATEGORY_META, CATEGORY_SLUGS, type CategorySlug } from "@/lib/constants";
 import { getEntries, isCategorySlug } from "@/lib/data";
 
@@ -32,25 +30,21 @@ export async function generateMetadata({
 
 export default async function CategoryPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ category: string }>;
-  searchParams: Promise<{ q?: string }>;
 }) {
   const resolvedParams = await params;
-  const resolvedSearchParams = await searchParams;
 
   if (!isCategorySlug(resolvedParams.category)) {
     notFound();
   }
 
   const category = resolvedParams.category as CategorySlug;
-  const query = resolvedSearchParams.q?.trim() ?? "";
-  const entries = await getEntries({ categorySlug: category, search: query });
+  const entries = await getEntries({ categorySlug: category });
 
   return (
     <div className="space-y-6">
-      <section className="space-y-3 border-b border-white/15 pb-6">
+      <section className="border-beam panel-sheen reveal-up space-y-3 rounded-xl border border-white/15 p-5 pb-6 soft-shadow">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <Badge>{CATEGORY_META[category].title}</Badge>
@@ -64,49 +58,24 @@ export default async function CategoryPage({
                 Home
               </Button>
             </Link>
-            <Link href={`/entries/new?category=${category}`}>
-              <Button>Add Entry</Button>
-            </Link>
           </div>
         </div>
       </section>
 
-      <Card>
-        <CardContent className="space-y-3 p-4 sm:p-5">
-          <form className="grid gap-2 sm:grid-cols-[1fr_auto_auto]" method="GET">
-            <label htmlFor="category-search" className="sr-only">
-              Search entries in {CATEGORY_META[category].title}
-            </label>
-            <Input id="category-search" name="q" placeholder="Search entries" defaultValue={query} />
-            <Button type="submit">
-              <Search className="mr-2 h-4 w-4" />
-              Search
-            </Button>
-            {query ? (
-              <Link href={`/${category}`}>
-                <Button type="button" variant="secondary">Clear</Button>
-              </Link>
-            ) : null}
-          </form>
-          <p className="text-sm text-zinc-400">
-            {entries.length} {entries.length === 1 ? "entry" : "entries"}
-            {query ? ` matching "${query}"` : ""}
-          </p>
-        </CardContent>
-      </Card>
+      <p className="text-sm text-zinc-400">
+        {entries.length} {entries.length === 1 ? "entry" : "entries"}
+      </p>
 
       {entries.length ? (
-        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <section className="stagger-reveal grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {entries.map((entry) => (
             <EntryCard key={entry.id} entry={entry} />
           ))}
         </section>
       ) : (
         <EmptyState
-          title="No matching entries"
-          description="Try another search term or create a new entry."
-          ctaHref={`/entries/new?category=${category}`}
-          ctaLabel="Add Entry"
+          title="No entries yet"
+          description="No entries are available in this category yet."
         />
       )}
     </div>

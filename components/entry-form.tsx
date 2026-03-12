@@ -22,8 +22,8 @@ export function EntryForm({
   submitLabel: string;
 }) {
   return (
-    <form action={action} className="space-y-5">
-      <Card>
+    <form action={action} className="space-y-5 stagger-reveal">
+      <Card className="hover-lift border-white/20">
         <CardHeader>
           <CardTitle>Core details</CardTitle>
         </CardHeader>
@@ -72,7 +72,7 @@ export function EntryForm({
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="hover-lift border-white/20">
         <CardHeader>
           <CardTitle>Usage & Trade-offs</CardTitle>
           <p className="text-sm text-zinc-400">All fields support markdown. Use concise bullets and concrete situations.</p>
@@ -107,11 +107,11 @@ export function EntryForm({
         </CardContent>
       </Card>
 
-      <div className="flex flex-wrap justify-end gap-2 border-t border-white/10 pt-5">
+      <div className="reveal-up flex flex-wrap justify-end gap-2 border-t border-white/10 pt-5">
         {cancelHref ? (
           <Link
             href={cancelHref}
-            className="inline-flex h-11 items-center justify-center rounded-md border border-white/20 px-6 text-sm font-medium text-zinc-200 transition-colors hover:bg-white/10"
+            className="inline-flex h-11 items-center justify-center rounded-md border border-white/20 px-6 text-sm font-medium text-zinc-200 transition-[transform,background-color,border-color] duration-200 ease-out hover:-translate-y-px hover:bg-white/10"
           >
             Cancel
           </Link>

@@ -15,7 +15,7 @@ export function EmptyState({
   ctaLabel?: string;
 }) {
   return (
-    <Card className="border-dashed">
+    <Card className="border-dashed reveal-up hover-lift border-white/20">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>

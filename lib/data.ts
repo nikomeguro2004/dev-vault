@@ -125,14 +125,21 @@ export async function getCategoryBySlug(slug: string) {
 
 export async function getEntries(params?: {
   categorySlug?: string;
+  categorySlugs?: string[];
   search?: string;
   limit?: number;
+  sort?: "newest" | "oldest" | "title-asc" | "title-desc";
 }): Promise<EntryListItem[]> {
   const supabase = createSupabaseServerClient();
+
+  const sort = params?.sort ?? "newest";
+  const orderColumn = sort === "title-asc" || sort === "title-desc" ? "title" : "created_at";
+  const orderAscending = sort === "oldest" || sort === "title-asc";
+
   let query = supabase
     .from("entries")
     .select("id,title,description,category_id,created_at,category:categories(id,name,slug)")
-    .order("created_at", { ascending: false });
+    .order(orderColumn, { ascending: orderAscending });
 
   if (params?.limit) {
     query = query.limit(params.limit);
@@ -146,9 +153,29 @@ export async function getEntries(params?: {
     query = query.eq("category_id", category.id);
   }
 
+  if (params?.categorySlugs?.length) {
+    const { data: categories, error: categoriesError } = await supabase
+      .from("categories")
+      .select("id,slug")
+      .in("slug", params.categorySlugs);
+
+    if (categoriesError) {
+      throw new Error(categoriesError.message);
+    }
+
+    const categoryIds = (categories ?? []).map((item) => item.id);
+    if (!categoryIds.length) {
+      return [];
+    }
+
+    query = query.in("category_id", categoryIds);
+  }
+
   if (params?.search) {
     const safe = sanitizeForLike(params.search);
-    query = query.or(`title.ilike.%${safe}%,description.ilike.%${safe}%`);
+    query = query.or(
+      `title.ilike.%${safe}%,description.ilike.%${safe}%,when_to_use.ilike.%${safe}%,pros.ilike.%${safe}%,cons.ilike.%${safe}%,notes.ilike.%${safe}%`,
+    );
   }
 
   const { data, error } = await query;
@@ -248,6 +275,7 @@ export async function updateEntry(id: string, input: EntryInput) {
 }
 
 export async function deleteEntry(_id: string) {
+  void _id;
   throw new Error("Deleting entries is disabled.");
 }
 

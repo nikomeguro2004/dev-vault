@@ -28,7 +28,9 @@ export function FormSubmitButton({
       aria-busy={pending}
       onClick={onClick}
     >
-      {pending ? (pendingLabel ?? "Saving...") : label}
+      <span className={pending ? "animate-pulse" : ""}>
+        {pending ? (pendingLabel ?? "Saving...") : label}
+      </span>
     </Button>
   );
 }

@@ -18,22 +18,19 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <Card>
+    <div className="mx-auto max-w-2xl reveal-up">
+      <Card className="border-beam panel-sheen rounded-xl border-white/20 soft-shadow">
         <CardHeader>
           <CardTitle>Something went wrong</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-sm text-zinc-600 dark:text-zinc-300">
+          <p className="text-sm text-zinc-300">
             We could not load this view. Try again, or go back to the dashboard.
           </p>
           <div className="flex flex-wrap gap-2">
             <Button onClick={reset}>Try Again</Button>
-            <Link
-              href="/"
-              className="inline-flex h-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 px-4 text-sm font-semibold text-zinc-900 backdrop-blur-xl transition-colors hover:bg-white/20 dark:border-white/15 dark:text-zinc-100"
-            >
-              Back Home
+            <Link href="/">
+              <Button variant="secondary">Back Home</Button>
             </Link>
           </div>
         </CardContent>

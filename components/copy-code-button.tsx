@@ -15,8 +15,12 @@ export function CopyCodeButton({ code }: { code: string }) {
   }
 
   return (
-    <Button variant="secondary" size="sm" onClick={onCopy} type="button">
-      {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+    <Button variant="secondary" size="sm" onClick={onCopy} type="button" className="hover-lift">
+      {copied ? (
+        <Check className="h-3.5 w-3.5 transition-transform duration-200 ease-out" />
+      ) : (
+        <Copy className="h-3.5 w-3.5 transition-transform duration-200 ease-out" />
+      )}
     </Button>
   );
 }

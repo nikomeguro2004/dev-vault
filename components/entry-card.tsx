@@ -6,8 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function EntryCard({ entry }: { entry: EntryListItem }) {
   return (
-    <Link href={`/entries/${entry.id}`} className="group block">
-      <Card className="h-full transition-colors group-hover:border-white/30 group-hover:bg-white/5">
+    <Link href={`/entries/${entry.id}`} className="group block focus-visible:outline-none">
+      <Card className="hover-lift h-full transition-colors group-hover:border-white/30 group-hover:bg-white/5 group-focus-visible:border-white/35 group-focus-visible:ring-2 group-focus-visible:ring-zinc-300/60">
         <CardHeader className="space-y-3 pb-4">
           <div className="flex items-start justify-between gap-3">
             <CardTitle className="line-clamp-2 text-base">{entry.title}</CardTitle>

@@ -43,17 +43,17 @@ export default async function EntryPage({
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <nav className="flex items-center gap-2 text-sm text-zinc-500" aria-label="Breadcrumb">
+      <nav className="flex flex-wrap items-center gap-2 text-sm text-zinc-500" aria-label="Breadcrumb">
         <Link href="/" className="transition-colors hover:text-zinc-300">Home</Link>
         <span>/</span>
         <Link href={entry.category?.slug ? `/${entry.category.slug}` : "/"} className="transition-colors hover:text-zinc-300">
           {entry.category?.name ?? "Unknown"}
         </Link>
         <span>/</span>
-        <span className="max-w-56 truncate text-zinc-300">{entry.title}</span>
+        <span className="min-w-0 max-w-56 truncate text-zinc-300">{entry.title}</span>
       </nav>
 
-      <header className="space-y-4 border-b border-white/15 pb-6">
+      <header className="border-beam panel-sheen reveal-up space-y-4 rounded-xl border border-white/15 p-5 pb-6 soft-shadow">
         <div className="flex flex-wrap items-center gap-2 text-xs">
           <Badge>{entry.category?.name ?? "Unknown"}</Badge>
           <span className="inline-flex items-center gap-1 text-zinc-500">
@@ -89,7 +89,7 @@ export default async function EntryPage({
           {entry.notes ? <ContentCard title="Notes" content={entry.notes} /> : null}
         </section>
 
-        <aside className="h-fit space-y-3 border border-white/15 p-4 lg:sticky lg:top-24">
+        <aside className="border-beam panel-sheen reveal-up h-fit space-y-3 rounded-xl border border-white/15 p-4 soft-shadow lg:sticky lg:top-24">
           <p className="text-xs uppercase tracking-wider text-zinc-500">Metadata</p>
           <dl className="space-y-2 text-sm">
             <div>
@@ -115,7 +115,7 @@ function ContentCard({ title, content }: { title: string; content: string }) {
   if (!content) return null;
 
   return (
-    <Card>
+    <Card className="hover-lift border-white/20">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-base">
           <FileText className="h-4 w-4 text-zinc-400" />
